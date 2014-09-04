@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CopyrightModifier_swift/AppDelegate.swift"
-            timestampString = "431533002.31442"
+            timestampString = "431251011.198982"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "processDirectory(_:filePatterns:)"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "dateStringForDateOfFile(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CopyrightModifier_swift/AppDelegate.swift"
-            timestampString = "431533002.31442"
+            timestampString = "431251016.584806"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "processPath(_:)"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
+            landmarkName = "dateStringForDateOfFile(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CopyrightModifier_swift/AppDelegate.swift"
-            timestampString = "431533002.31442"
+            timestampString = "431251068.996064"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "processPath(_:)"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
+            landmarkName = "dateStringForDateOfFile(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -8,30 +8,45 @@
 
 /* Begin PBXBuildFile section */
 		B3021DF319A4C6E600DEFB62 /* DDTask.m in Sources */ = {isa = PBXBuildFile; fileRef = B3021DF119A4C6E600DEFB62 /* DDTask.m */; };
-		B36175CC19A4916600186F90 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36175CB19A4916600186F90 /* main.swift */; };
-		B36175CE19A4916600186F90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36175CD19A4916600186F90 /* AppDelegate.swift */; };
-		B36175D019A4916600186F90 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B36175CF19A4916600186F90 /* Images.xcassets */; };
-		B36175D319A4916600186F90 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B36175D119A4916600186F90 /* MainMenu.xib */; };
-		B3A578ED19A640EE0020B3D5 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = B3A578EB19A640EE0020B3D5 /* LICENSE */; };
-		B3A578EE19A640EE0020B3D5 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B3A578EC19A640EE0020B3D5 /* README.md */; };
+		B310F0A919B8A70A00C60F6A /* String+fileName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310F0A819B8A70A00C60F6A /* String+fileName.swift */; };
+		B42D8CE219B32B5400AB8180 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B42D8CE119B32B5400AB8180 /* main.m */; };
+		B42D8CE819B32B5400AB8180 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B42D8CE719B32B5400AB8180 /* AppDelegate.m */; };
+		B42D8D0519B32C1A00AB8180 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B42D8D0219B32C1A00AB8180 /* Images.xcassets */; };
+		B42D8D0619B32C1A00AB8180 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B42D8D0219B32C1A00AB8180 /* Images.xcassets */; };
+		B42D8D0919B32C1A00AB8180 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B42D8D0419B32C1A00AB8180 /* MainMenu.xib */; };
+		B42D8D0A19B32C1A00AB8180 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B42D8D0419B32C1A00AB8180 /* MainMenu.xib */; };
+		B42D8D0F19B32D9500AB8180 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42D8D0C19B32D9500AB8180 /* AppDelegate.swift */; };
+		B42D8D1019B32D9500AB8180 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42D8D0E19B32D9500AB8180 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B3021DF019A4C6E600DEFB62 /* DDTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTask.h; sourceTree = "<group>"; };
 		B3021DF119A4C6E600DEFB62 /* DDTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTask.m; sourceTree = "<group>"; };
-		B3021DF519A4C6F700DEFB62 /* Bridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridging.h; sourceTree = "<group>"; };
-		B36175C619A4916600186F90 /* CoprightModifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoprightModifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B36175CA19A4916600186F90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B36175CB19A4916600186F90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		B36175CD19A4916600186F90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B36175CF19A4916600186F90 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		B36175D219A4916600186F90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B310F0A819B8A70A00C60F6A /* String+fileName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+fileName.swift"; sourceTree = "<group>"; };
+		B36175C619A4916600186F90 /* CopyrightModifier_swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyrightModifier_swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3A578EB19A640EE0020B3D5 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B3A578EC19A640EE0020B3D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B42D8CDD19B32B5400AB8180 /* CopyrightModifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyrightModifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B42D8CE119B32B5400AB8180 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B42D8CE619B32B5400AB8180 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B42D8CE719B32B5400AB8180 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B42D8D0219B32C1A00AB8180 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B42D8D0319B32C1A00AB8180 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B42D8D0419B32C1A00AB8180 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		B42D8D0C19B32D9500AB8180 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B42D8D0D19B32D9500AB8180 /* Bridging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bridging.h; sourceTree = "<group>"; };
+		B42D8D0E19B32D9500AB8180 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B36175C319A4916600186F90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B42D8CDA19B32B5400AB8180 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -55,8 +70,8 @@
 			children = (
 				B3A578EB19A640EE0020B3D5 /* LICENSE */,
 				B3A578EC19A640EE0020B3D5 /* README.md */,
-				B3021DEF19A4C6E600DEFB62 /* DDTask */,
-				B36175C819A4916600186F90 /* CoprightModifier */,
+				B42D8CD219B32AAD00AB8180 /* App */,
+				B42D8CD319B32AB700AB8180 /* Vendor */,
 				B36175C719A4916600186F90 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,38 +79,67 @@
 		B36175C719A4916600186F90 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B36175C619A4916600186F90 /* CoprightModifier.app */,
+				B36175C619A4916600186F90 /* CopyrightModifier_swift.app */,
+				B42D8CDD19B32B5400AB8180 /* CopyrightModifier.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B36175C819A4916600186F90 /* CoprightModifier */ = {
+		B42D8CD219B32AAD00AB8180 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				B36175CD19A4916600186F90 /* AppDelegate.swift */,
-				B36175CF19A4916600186F90 /* Images.xcassets */,
-				B36175D119A4916600186F90 /* MainMenu.xib */,
-				B36175C919A4916600186F90 /* Supporting Files */,
-				B3021DF519A4C6F700DEFB62 /* Bridging.h */,
+				B42D8CDE19B32B5400AB8180 /* CopyrightModifier */,
+				B42D8D0B19B32D9500AB8180 /* CopyrightModifier_swift */,
+				B42D8D0119B32C1A00AB8180 /* CopyrightModifier_common */,
 			);
-			path = CoprightModifier;
+			name = App;
 			sourceTree = "<group>";
 		};
-		B36175C919A4916600186F90 /* Supporting Files */ = {
+		B42D8CD319B32AB700AB8180 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				B36175CA19A4916600186F90 /* Info.plist */,
-				B36175CB19A4916600186F90 /* main.swift */,
+				B3021DEF19A4C6E600DEFB62 /* DDTask */,
 			);
-			name = "Supporting Files";
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		B42D8CDE19B32B5400AB8180 /* CopyrightModifier */ = {
+			isa = PBXGroup;
+			children = (
+				B42D8CE619B32B5400AB8180 /* AppDelegate.h */,
+				B42D8CE719B32B5400AB8180 /* AppDelegate.m */,
+				B42D8CE119B32B5400AB8180 /* main.m */,
+			);
+			path = CopyrightModifier;
+			sourceTree = "<group>";
+		};
+		B42D8D0119B32C1A00AB8180 /* CopyrightModifier_common */ = {
+			isa = PBXGroup;
+			children = (
+				B42D8D0219B32C1A00AB8180 /* Images.xcassets */,
+				B42D8D0419B32C1A00AB8180 /* MainMenu.xib */,
+				B42D8D0319B32C1A00AB8180 /* Info.plist */,
+			);
+			path = CopyrightModifier_common;
+			sourceTree = "<group>";
+		};
+		B42D8D0B19B32D9500AB8180 /* CopyrightModifier_swift */ = {
+			isa = PBXGroup;
+			children = (
+				B42D8D0C19B32D9500AB8180 /* AppDelegate.swift */,
+				B42D8D0D19B32D9500AB8180 /* Bridging.h */,
+				B42D8D0E19B32D9500AB8180 /* main.swift */,
+				B310F0A819B8A70A00C60F6A /* String+fileName.swift */,
+			);
+			path = CopyrightModifier_swift;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B36175C519A4916600186F90 /* CoprightModifier */ = {
+		B36175C519A4916600186F90 /* CopyrightModifier_swift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B36175E219A4916600186F90 /* Build configuration list for PBXNativeTarget "CoprightModifier" */;
+			buildConfigurationList = B36175E219A4916600186F90 /* Build configuration list for PBXNativeTarget "CopyrightModifier_swift" */;
 			buildPhases = (
 				B36175C219A4916600186F90 /* Sources */,
 				B36175C319A4916600186F90 /* Frameworks */,
@@ -105,9 +149,26 @@
 			);
 			dependencies = (
 			);
-			name = CoprightModifier;
+			name = CopyrightModifier_swift;
 			productName = CoprightModifier;
-			productReference = B36175C619A4916600186F90 /* CoprightModifier.app */;
+			productReference = B36175C619A4916600186F90 /* CopyrightModifier_swift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B42D8CDC19B32B5400AB8180 /* CopyrightModifier */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B42D8CFA19B32B5400AB8180 /* Build configuration list for PBXNativeTarget "CopyrightModifier" */;
+			buildPhases = (
+				B42D8CD919B32B5400AB8180 /* Sources */,
+				B42D8CDA19B32B5400AB8180 /* Frameworks */,
+				B42D8CDB19B32B5400AB8180 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CopyrightModifier;
+			productName = CopyrightModifier;
+			productReference = B42D8CDD19B32B5400AB8180 /* CopyrightModifier.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -120,6 +181,9 @@
 				ORGANIZATIONNAME = "Dominik Pich";
 				TargetAttributes = {
 					B36175C519A4916600186F90 = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					B42D8CDC19B32B5400AB8180 = {
 						CreatedOnToolsVersion = 6.0;
 					};
 				};
@@ -137,7 +201,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B36175C519A4916600186F90 /* CoprightModifier */,
+				B42D8CDC19B32B5400AB8180 /* CopyrightModifier */,
+				B36175C519A4916600186F90 /* CopyrightModifier_swift */,
 			);
 		};
 /* End PBXProject section */
@@ -147,9 +212,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3A578ED19A640EE0020B3D5 /* LICENSE in Resources */,
-				B36175D019A4916600186F90 /* Images.xcassets in Resources */,
-				B36175D319A4916600186F90 /* MainMenu.xib in Resources */,
+				B42D8D0619B32C1A00AB8180 /* Images.xcassets in Resources */,
+				B42D8D0A19B32C1A00AB8180 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B42D8CDB19B32B5400AB8180 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B42D8D0519B32C1A00AB8180 /* Images.xcassets in Resources */,
+				B42D8D0919B32C1A00AB8180 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,25 +233,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B36175CE19A4916600186F90 /* AppDelegate.swift in Sources */,
 				B3021DF319A4C6E600DEFB62 /* DDTask.m in Sources */,
-				B3A578EE19A640EE0020B3D5 /* README.md in Sources */,
-				B36175CC19A4916600186F90 /* main.swift in Sources */,
+				B42D8D1019B32D9500AB8180 /* main.swift in Sources */,
+				B42D8D0F19B32D9500AB8180 /* AppDelegate.swift in Sources */,
+				B310F0A919B8A70A00C60F6A /* String+fileName.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B42D8CD919B32B5400AB8180 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B42D8CE219B32B5400AB8180 /* main.m in Sources */,
+				B42D8CE819B32B5400AB8180 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		B36175D119A4916600186F90 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B36175D219A4916600186F90 /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B36175E019A4916600186F90 /* Debug */ = {
@@ -215,6 +286,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = CopyrightModifier_common/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -252,6 +324,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = CopyrightModifier_common/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -263,10 +336,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = CoprightModifier/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = CoprightModifier/Bridging.h;
+				SWIFT_OBJC_BRIDGING_HEADER = CopyrightModifier_swift/Bridging.h;
 			};
 			name = Debug;
 		};
@@ -275,10 +347,33 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = CoprightModifier/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = CoprightModifier/Bridging.h;
+				SWIFT_OBJC_BRIDGING_HEADER = CopyrightModifier_swift/Bridging.h;
+			};
+			name = Release;
+		};
+		B42D8CFB19B32B5400AB8180 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B42D8CFC19B32B5400AB8180 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -294,11 +389,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B36175E219A4916600186F90 /* Build configuration list for PBXNativeTarget "CoprightModifier" */ = {
+		B36175E219A4916600186F90 /* Build configuration list for PBXNativeTarget "CopyrightModifier_swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B36175E319A4916600186F90 /* Debug */,
 				B36175E419A4916600186F90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B42D8CFA19B32B5400AB8180 /* Build configuration list for PBXNativeTarget "CopyrightModifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B42D8CFB19B32B5400AB8180 /* Debug */,
+				B42D8CFC19B32B5400AB8180 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -17,6 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var removeOld: NSButton!
     @IBOutlet weak var applyNewHeader: NSButton!
     @IBOutlet var newTemplate: NSTextView!
+    @IBOutlet var backupOld: NSButton!
+
     @IBOutlet weak var box: NSBox!
     @IBOutlet weak var progress: NSProgressIndicator!
     @IBOutlet weak var latestFile: NSTextField!
@@ -67,6 +69,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.latestFile.stringValue = url.lastPathComponent
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
+            
+            //backup first if wanted
+            if(self.backupOld.state == NSOnState) {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+                dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+                let dateString = dateFormatter.stringFromDate(NSDate())
+                
+                let tmpUrl = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent(NSUUID().UUIDString))
+                var backupUrl = url.URLByAppendingPathComponent("__CRMBackup").URLByAppendingPathExtension(dateString.fileName)
+                var anError: NSError?
+                var ok = NSFileManager.defaultManager().copyItemAtURL(url, toURL: tmpUrl, error: &anError)
+                if(!ok) {
+                    println("cant copy backup to tmp");
+                    return
+                }
+                anError = nil
+                ok = NSFileManager.defaultManager().moveItemAtURL(tmpUrl, toURL: backupUrl, error: &anError)
+                if(!ok) {
+                    println("cant move backup from tmp to final pos");
+                    return
+                }
+            }
+            
             var anyError: NSError?
             var isDir: AnyObject?
             var success = url.getResourceValue(&isDir, forKey:NSURLIsDirectoryKey, error:&anyError)
@@ -102,14 +128,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func processDirectory(dirUrl:NSURL, filePatterns:NSArray) {
         println(dirUrl)
-        
+       
         let keys = [NSURLIsDirectoryKey as AnyObject, NSURLCreationDateKey as AnyObject]
         let enumerator = NSFileManager.defaultManager().enumeratorAtURL(dirUrl, includingPropertiesForKeys: keys, options: NSDirectoryEnumerationOptions.SkipsPackageDescendants) { (url, error) -> Bool in
             println("failed (url)")
             return true
         }
         
-        for url in enumerator.allObjects {
+        let array = enumerator!.allObjects
+        for url in array {
             dispatch_async(dispatch_get_main_queue()) {
                 self.latestFile.stringValue = url.lastPathComponent
             }
@@ -187,38 +214,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if (self.newTemplate.string as NSString).length > 0 {
                 //get file name
                 let fileName = fileUrl.lastPathComponent
-                var dateString:NSString = ""
                 
-                //get svn date
-                let svnResult:NSString = DDTask.runTaskWithToolPath("/usr/bin/svn", andArguments: ["info", fileUrl.path], andErrorHandler: nil)
-                let lines = svnResult.componentsSeparatedByString("\n")
-                for line in lines as [NSString] {
-                    if line.hasPrefix("Last Changed Date: ") {
-                        let l = line.stringByReplacingOccurrencesOfString("Last Changed Date: ", withString: "")
-                        let words = l.componentsSeparatedByString(" ")
-                        dateString = words[0]
-                        break
-                    }
-                }
+                //get date
+                let dateString = AppDelegate.dateStringForDateOfFile(fileUrl)
                 
-                if dateString.length == 0 {
-                    //get file date
-                    var creationDate: AnyObject?
-                    let success = fileUrl.getResourceValue(&creationDate, forKey:NSURLCreationDateKey, error:&anyError)
-                    if !success {
-                        println("error reading url key")
-                        return
-                    }
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
-                    dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-                    dateString = dateFormatter.stringFromDate(creationDate as NSDate)
-                }
-                
-                var userName = NSFullUserName()
-                if !userName {
-                    userName = NSUserName()
-                }
+                //get username
+                var userName = AppDelegate.usernameOfFile(fileUrl)
                 
                 //prepend new header
                 var header = NSMutableString(string: self.newTemplate.string)
@@ -237,5 +238,134 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             println(anyError)
         }
     }
-}
+    
+    class func dateStringForDateOfFile(fileUrl:NSURL) -> String {
+        var dateString:NSString = ""
+        
+        //get cwd
+        let f:NSString! = fileUrl.path
+        var dir = f.stringByDeletingLastPathComponent
+        
+        //get git last changed date
+        let gitDate = "Date:"
+        let gitPath = "/usr/bin/git"
+        let gitInfoArgs = ["log"]//, f, "--reverse"]
+        var gitResult:NSString! = DDTask.runTaskWithToolPath(gitPath, andArguments: gitInfoArgs, currentDirectoryPath: dir, andErrorHandler: nil)
+        if(gitResult != nil && gitResult.length > 0) {
+            let lines = gitResult.componentsSeparatedByString("\n")
+            for line in lines as [NSString] {
+                if line.hasPrefix(gitDate) {
+                    let l = line.stringByReplacingOccurrencesOfString(gitDate, withString: "")
+                    dateString = l.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                    break
+                }
+            }
+        }
 
+        //fallback to svn last changed date
+        if dateString.length == 0 {
+            let svnLastChangedDate = "Last Changed Date: "
+            let svnPath = "/usr/bin/svn"
+            let svnInfoArgs = ["info", f]
+            var svnResult:NSString! = DDTask.runTaskWithToolPath(svnPath, andArguments: svnInfoArgs, andErrorHandler: nil)
+            if(svnResult != nil && svnResult.length > 0) {
+                let lines = svnResult.componentsSeparatedByString("\n")
+                for line in lines as [NSString] {
+                    if line.hasPrefix(svnLastChangedDate) {
+                        let l = line.stringByReplacingOccurrencesOfString(svnLastChangedDate, withString: "")
+                        let words = l.componentsSeparatedByString(" ")
+                        dateString = words[0]
+                        break
+                    }
+                }
+            }
+        }
+        
+        //fallback to local creation date
+        if dateString.length == 0 {
+            //get file date
+            var creationDate: AnyObject?
+            var anyError: NSError?
+            let success = fileUrl.getResourceValue(&creationDate, forKey:NSURLCreationDateKey, error:&anyError)
+            if success {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+                dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+                dateString = dateFormatter.stringFromDate(creationDate as NSDate)
+            }
+            else {
+                println(anyError)
+            }
+        }
+        
+        return dateString
+    }
+    
+    class func usernameOfFile(fileUrl:NSURL) -> String {
+        var username:NSString = ""
+        
+        //get cwd
+        let f:NSString! = fileUrl.path
+        var dir = f.stringByDeletingLastPathComponent
+        
+        //get git author date
+        let gitUser = "Author:"
+        let gitPath = "/usr/bin/git"
+        let gitInfoArgs = ["log"]//, f, "--reverse"]
+        var gitResult:NSString! = DDTask.runTaskWithToolPath(gitPath, andArguments: gitInfoArgs, currentDirectoryPath: dir, andErrorHandler: nil)
+        if(gitResult != nil && gitResult.length > 0) {
+            let lines = gitResult.componentsSeparatedByString("\n")
+            for line in lines as [NSString] {
+                if line.hasPrefix(gitUser) {
+                    let l = line.stringByReplacingOccurrencesOfString(gitUser, withString: "")
+                    username = l.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                    break
+                }
+            }
+        }
+        
+        //fallback to svn last changed date
+        if username.length == 0 {
+            let svnLastChangedAuthor = "Last Changed Author: "
+            let svnPath = "/usr/bin/svn"
+            let svnInfoArgs = ["info", f]
+            var svnResult:NSString! = DDTask.runTaskWithToolPath(svnPath, andArguments: svnInfoArgs, andErrorHandler: nil)
+            if(svnResult != nil && svnResult.length > 0) {
+                let lines = svnResult.componentsSeparatedByString("\n")
+                for line in lines as [NSString] {
+                    if line.hasPrefix(svnLastChangedAuthor) {
+                        let l = line.stringByReplacingOccurrencesOfString(svnLastChangedAuthor, withString: "")
+                        let words = l.componentsSeparatedByString(" ")
+                        username = words[0]
+                        break
+                    }
+                }
+            }
+        }
+
+        //native
+        var longUserName = NSFullUserName()
+        var shortUserName = NSUserName()
+
+        if username.length > 0 {
+            //try if we can match it
+            if(longUserName != nil) {
+                if(username.isEqualToString(shortUserName) == 0) {
+                    username = longUserName
+                }
+            }
+        }
+
+        //fallback to native
+        if username.length == 0 {
+            if(longUserName != nil) {
+                username = longUserName
+            }
+            else {
+                username = shortUserName
+            }
+        }
+        
+        return username
+    }
+}

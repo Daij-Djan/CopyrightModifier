@@ -15,22 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B36175C519A4916600186F90"
-               BuildableName = "CoprightModifier.app"
-               BlueprintName = "CoprightModifier"
-               ReferencedContainer = "container:CoprightModifier.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B36175D719A4916600186F90"
-               BuildableName = "CoprightModifierTests.xctest"
-               BlueprintName = "CoprightModifierTests"
+               BuildableName = "CopyrightModifier_swift.app"
+               BlueprintName = "CopyrightModifier_swift"
                ReferencedContainer = "container:CoprightModifier.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,23 +28,13 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B36175D719A4916600186F90"
-               BuildableName = "CoprightModifierTests.xctest"
-               BlueprintName = "CoprightModifierTests"
-               ReferencedContainer = "container:CoprightModifier.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B36175C519A4916600186F90"
-            BuildableName = "CoprightModifier.app"
-            BlueprintName = "CoprightModifier"
+            BuildableName = "CopyrightModifier_swift.app"
+            BlueprintName = "CopyrightModifier_swift"
             ReferencedContainer = "container:CoprightModifier.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -76,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B36175C519A4916600186F90"
-            BuildableName = "CoprightModifier.app"
-            BlueprintName = "CoprightModifier"
+            BuildableName = "CopyrightModifier_swift.app"
+            BlueprintName = "CopyrightModifier_swift"
             ReferencedContainer = "container:CoprightModifier.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -94,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B36175C519A4916600186F90"
-            BuildableName = "CoprightModifier.app"
-            BlueprintName = "CoprightModifier"
+            BuildableName = "CopyrightModifier_swift.app"
+            BlueprintName = "CopyrightModifier_swift"
             ReferencedContainer = "container:CoprightModifier.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -57,7 +57,8 @@
             if (self.arguments.count)
                 [task setArguments:self.arguments];
             [task setStandardOutput:pipe];
-
+            [task setCurrentDirectoryPath:currentDirectoryPath];
+            
             NSDate *before = [NSDate date];
             
             //launch & read stdout
@@ -106,13 +107,16 @@
 
 #pragma mark convenience
 
-//convenience
 + (NSString *)runTaskWithToolPath:(NSString *)toolpath andArguments:(NSArray *)args andErrorHandler:(DDTaskErrorHandler)errorHandler {
+    return [self runTaskWithToolPath:toolpath andArguments:args currentDirectoryPath:nil andErrorHandler:errorHandler];
+}
+
++ (NSString *)runTaskWithToolPath:(NSString *)toolpath andArguments:(NSArray *)args currentDirectoryPath:(NSString*)currentDirectoryPath andErrorHandler:(DDTaskErrorHandler)errorHandler {
     DDTask *task = [[DDTask alloc] init];
     task.launchPath = toolpath;
     task.arguments = args;
     task.errorHandler = errorHandler;
-    
+    task.currentDirectoryPath = currentDirectoryPath;
     [task run];
     
     if (task.terminationStatus==0) {

@@ -4,12 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>CopyrightModifier.xcscheme_^#shared#^_</key>
+		<key>CopyrightModifier.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>CopyrightModifier_swift.xcscheme_^#shared#^_</key>
+		<key>CopyrightModifier_swift.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -22,12 +22,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B36175D719A4916600186F90</key>
+		<key>B42D8CA119B32A5A00AB8180</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B42D8CB619B32A5B00AB8180</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>B42D8CDC19B32B5400AB8180</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B42D8CF119B32B5400AB8180</key>
 		<dict>
 			<key>primary</key>
 			<true/>
