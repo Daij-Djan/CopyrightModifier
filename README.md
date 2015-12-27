@@ -28,3 +28,7 @@ howto:
 6. REVIEW the changes that would be made to the files that match and confirm or reject them on a per-file basis and 'save' the changes to disk
 
 	![Review changed interface](./README-Files/3.png)
+	
+#license
+the App under './CopyrightModifier' is under GPL2
+the Helpers under './Helpers' are under BSD
