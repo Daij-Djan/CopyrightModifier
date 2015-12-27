@@ -1,0 +1,7 @@
+/**
+ @file      ${FILENAME}
+ @author    ${AUTHOR}
+ @date      ${CREATIONDATE}
+
+${LICENSETEXT}
+*/

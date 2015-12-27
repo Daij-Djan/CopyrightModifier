@@ -1,0 +1,2 @@
+Copyright (c) ${YEAR}, ${OWNER}
+All rights reserved.

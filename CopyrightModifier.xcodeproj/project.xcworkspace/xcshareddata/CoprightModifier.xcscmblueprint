@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04" : 0,
+    "70783EE7218D87FCBAABD7787F6E3A25EFFAFB2F" : 0,
+    "DE2646290BDFCDBBA9BF874E0EEDB7E29546CD5E" : 0,
+    "E084C86B03F81D63323C9E7510697EA528A758C7" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "21459A03-B6B9-4D9A-8F35-0AF2C1F7FF0C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04" : "CoprightModifier",
+    "70783EE7218D87FCBAABD7787F6E3A25EFFAFB2F" : "CoprightModifier\/objective-git\/External\/libgit2",
+    "DE2646290BDFCDBBA9BF874E0EEDB7E29546CD5E" : "CoprightModifier\/objective-git",
+    "E084C86B03F81D63323C9E7510697EA528A758C7" : "CoprightModifier\/objective-git\/Carthage\/Checkouts\/xcconfigs"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CoprightModifier",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CoprightModifier.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Daij-Djan\/CoprightModifier.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/libgit2\/libgit2.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "70783EE7218D87FCBAABD7787F6E3A25EFFAFB2F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/libgit2\/objective-git.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DE2646290BDFCDBBA9BF874E0EEDB7E29546CD5E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jspahrsummers\/xcconfigs.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E084C86B03F81D63323C9E7510697EA528A758C7"
+    }
+  ]
+}
