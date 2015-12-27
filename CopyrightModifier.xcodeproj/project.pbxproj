@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B3577F711ABDDC20009159CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = B3A578EB19A640EE0020B3D5 /* LICENSE */; };
 		B359F7EA1ACE9CDE0059A353 /* NSUserDefaults+RunOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B359F7E91ACE9CDE0059A353 /* NSUserDefaults+RunOnce.swift */; };
 		B36204851AB63883005AE54B /* FileInfoOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36204841AB63883005AE54B /* FileInfoOptions.swift */; };
 		B36C95C01ABB1C3300E0CDB3 /* CopyrightInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C95BF1ABB1C3300E0CDB3 /* CopyrightInformation.swift */; };
@@ -22,6 +21,8 @@
 		B3C822AA1AB4CD3900E2FF73 /* FileContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C822A81AB4CD3900E2FF73 /* FileContent.swift */; };
 		B3C822AB1AB4CD3900E2FF73 /* FileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C822A91AB4CD3900E2FF73 /* FileWriter.swift */; };
 		B3C822AD1AB4D21B00E2FF73 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C822AC1AB4D21B00E2FF73 /* MainWindowController.swift */; };
+		B3CDB5931C30248700DE7B88 /* LICENSE App in Resources */ = {isa = PBXBuildFile; fileRef = B3CDB58D1C30248700DE7B88 /* LICENSE App */; };
+		B3CDB5941C30248700DE7B88 /* LICENSE Helpers in Resources */ = {isa = PBXBuildFile; fileRef = B3CDB58E1C30248700DE7B88 /* LICENSE Helpers */; };
 		B3E0648E1C0068A400A77C2D /* ObjectiveGit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3E0648D1C0068A400A77C2D /* ObjectiveGit.framework */; };
 		B3E064901C0068AB00A77C2D /* ObjectiveGit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B3E0648D1C0068A400A77C2D /* ObjectiveGit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B49FA2CE1A1FEC45006F035B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49FA2C61A1FEC45006F035B /* AppDelegate.swift */; };
@@ -54,7 +55,6 @@
 		B3A139411BFF7FC800491270 /* DefaultMinimalLicense.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DefaultMinimalLicense.txt; path = CopyrightModifier/DefaultMinimalLicense.txt; sourceTree = "<group>"; };
 		B3A139421BFF7FC800491270 /* DefaultTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DefaultTemplate.txt; path = CopyrightModifier/DefaultTemplate.txt; sourceTree = "<group>"; };
 		B3A139441BFF7FC800491270 /* myicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = myicon.icns; path = CopyrightModifier/myicon.icns; sourceTree = "<group>"; };
-		B3A578EB19A640EE0020B3D5 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B3A578EC19A640EE0020B3D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B3A6D6C81AB4D91A003F8F4B /* PreviewWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreviewWindowController.swift; path = CopyrightModifier/PreviewWindowController.swift; sourceTree = "<group>"; };
 		B3B58FFE1C139AA2002D5116 /* GTRepository+FindRecursive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GTRepository+FindRecursive.swift"; sourceTree = "<group>"; };
@@ -63,6 +63,8 @@
 		B3C822A81AB4CD3900E2FF73 /* FileContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileContent.swift; path = CopyrightModifier/FileContent.swift; sourceTree = "<group>"; };
 		B3C822A91AB4CD3900E2FF73 /* FileWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileWriter.swift; path = CopyrightModifier/FileWriter.swift; sourceTree = "<group>"; };
 		B3C822AC1AB4D21B00E2FF73 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainWindowController.swift; path = CopyrightModifier/MainWindowController.swift; sourceTree = "<group>"; };
+		B3CDB58D1C30248700DE7B88 /* LICENSE App */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "LICENSE App"; sourceTree = "<group>"; };
+		B3CDB58E1C30248700DE7B88 /* LICENSE Helpers */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "LICENSE Helpers"; sourceTree = "<group>"; };
 		B3E0648D1C0068A400A77C2D /* ObjectiveGit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectiveGit.framework; path = Carthage/Build/Mac/ObjectiveGit.framework; sourceTree = "<group>"; };
 		B49FA2C61A1FEC45006F035B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = CopyrightModifier/AppDelegate.swift; sourceTree = "<group>"; };
 		B49FA2C91A1FEC45006F035B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CopyrightModifier/Info.plist; sourceTree = "<group>"; };
@@ -95,8 +97,9 @@
 		B36175BD19A4916600186F90 = {
 			isa = PBXGroup;
 			children = (
+				B3CDB58D1C30248700DE7B88 /* LICENSE App */,
+				B3CDB58E1C30248700DE7B88 /* LICENSE Helpers */,
 				B3A578EC19A640EE0020B3D5 /* README.md */,
-				B3A578EB19A640EE0020B3D5 /* LICENSE */,
 				B42D8CD219B32AAD00AB8180 /* App */,
 				B49FA2DC1A20FCCA006F035B /* Helpers */,
 				B36175C719A4916600186F90 /* Products */,
@@ -219,11 +222,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3577F711ABDDC20009159CF /* LICENSE in Resources */,
 				B49FA2D21A1FEC45006F035B /* MainMenu.xib in Resources */,
 				B3A139481BFF7FC800491270 /* myicon.icns in Resources */,
 				B3A139461BFF7FC800491270 /* DefaultTemplate.txt in Resources */,
 				B3A139451BFF7FC800491270 /* DefaultMinimalLicense.txt in Resources */,
+				B3CDB5931C30248700DE7B88 /* LICENSE App in Resources */,
+				B3CDB5941C30248700DE7B88 /* LICENSE Helpers in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
