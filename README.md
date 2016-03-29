@@ -1,7 +1,7 @@
 CoprightModifier
 ================
 
-modify the copyright HEADER of source files (.h, .m, .swift, .java ... whatever)
+modify the copyright HEADER of source files (.swift, .h, .m, .js, .ts, .java ... )
 
 howto:
 ====

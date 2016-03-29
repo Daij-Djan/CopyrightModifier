@@ -16,7 +16,7 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
     var fileContents : Array<FileContent>? {
         didSet {
             var newFlags = [Bool]()
-            for var i = 0; i < fileContents?.count; i++ {
+            for var i = 0; i < fileContents?.count; i += 1 {
                 newFlags.append(true)
             }
             includeFlags = newFlags
@@ -37,7 +37,7 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
             }
             
             var checked = [FileContent]()
-            for var i = 0; i < fileContents?.count; i++ {
+            for var i = 0; i < fileContents?.count; i += 1 {
                 if(includeFlags[i]) {
                     checked.append(fileContents![i])
                 }

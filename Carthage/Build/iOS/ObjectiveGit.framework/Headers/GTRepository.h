@@ -150,6 +150,20 @@ extern NSString * const GTRepositoryInitOptionsInitialHEAD;
 /// initialization.
 extern NSString * const GTRepositoryInitOptionsOriginURLString;
 
+/// The possible states for the repository to be in, based on the current ongoing operation.
+typedef NS_ENUM(NSInteger, GTRepositoryStateType) {
+	GTRepositoryStateNone = GIT_REPOSITORY_STATE_NONE,
+	GTRepositoryStateMerge = GIT_REPOSITORY_STATE_MERGE,
+	GTRepositoryStateRevert = GIT_REPOSITORY_STATE_REVERT,
+	GTRepositoryStateCherryPick = GIT_REPOSITORY_STATE_CHERRYPICK,
+	GTRepositoryStateBisect = GIT_REPOSITORY_STATE_BISECT,
+	GTRepositoryStateRebase = GIT_REPOSITORY_STATE_REBASE,
+	GTRepositoryStateRebaseInteractive = GIT_REPOSITORY_STATE_REBASE_INTERACTIVE,
+	GTRepositoryStateRebaseMerge = GIT_REPOSITORY_STATE_REBASE_MERGE,
+	GTRepositoryStateApplyMailbox = GIT_REPOSITORY_STATE_APPLY_MAILBOX,
+	GTRepositoryStateApplyMailboxOrRebase = GIT_REPOSITORY_STATE_APPLY_MAILBOX_OR_REBASE,
+};
+
 @interface GTRepository : NSObject
 
 /// The file URL for the repository's working directory.
@@ -260,7 +274,7 @@ extern NSString * const GTRepositoryInitOptionsOriginURLString;
 ///
 /// returns an array of NSStrings holding the names of the references
 /// returns nil if an error occurred and fills the error parameter
-- (nullable NSArray *)referenceNamesWithError:(NSError **)error;
+- (nullable NSArray<NSString *> *)referenceNamesWithError:(NSError **)error;
 
 /// Get the HEAD reference.
 ///
@@ -269,27 +283,43 @@ extern NSString * const GTRepositoryInitOptionsOriginURLString;
 /// Returns a GTReference or nil if an error occurs.
 - (nullable GTReference *)headReferenceWithError:(NSError **)error;
 
+/// Move HEAD reference safely, since deleting and recreating HEAD is always wrong.
+///
+/// reference - The new target reference for HEAD.
+/// error     - If not NULL, set to any error that occurs.
+///
+/// Returns NO if an error occurs.
+- (BOOL)moveHEADToReference:(GTReference *)reference error:(NSError **)error;
+
+/// Move HEAD reference safely, since deleting and recreating HEAD is always wrong.
+///
+/// commit - The commit which HEAD should point to.
+/// error  - If not NULL, set to any error that occurs.
+///
+/// Returns NO if an error occurs.
+- (BOOL)moveHEADToCommit:(GTCommit *)commit error:(NSError **)error;
+
 /// Get the local branches.
 ///
 /// error - If not NULL, set to any error that occurs.
 ///
 /// Returns an array of GTBranches or nil if an error occurs.
-- (nullable NSArray *)localBranchesWithError:(NSError **)error;
+- (nullable NSArray<GTBranch *> *)localBranchesWithError:(NSError **)error;
 
 /// Get the remote branches.
 ///
 /// error - If not NULL, set to any error that occurs.
 ///
 /// Returns an array of GTBranches or nil if an error occurs.
-- (nullable NSArray *)remoteBranchesWithError:(NSError **)error;
+- (nullable NSArray<GTBranch *> *)remoteBranchesWithError:(NSError **)error;
 
 /// Get branches with names sharing a given prefix.
 ///
 /// prefix - The prefix to use for filtering. Must not be nil.
-/// error - If not NULL, set to any error that occurs.
+/// error  - If not NULL, set to any error that occurs.
 ///
 /// Returns an array of GTBranches or nil if an error occurs.
-- (nullable NSArray *)branchesWithPrefix:(NSString *)prefix error:(NSError **)error;
+- (nullable NSArray<GTBranch *> *)branchesWithPrefix:(NSString *)prefix error:(NSError **)error;
 
 /// Get the local and remote branches and merge them together by combining local
 /// branches with their remote branch, if they have one.
@@ -297,21 +327,21 @@ extern NSString * const GTRepositoryInitOptionsOriginURLString;
 /// error - If not NULL, set to any error that occurs.
 ///
 /// Returns an array of GTBranches or nil if an error occurs.
-- (nullable NSArray *)branches:(NSError **)error;
+- (nullable NSArray<GTBranch *> *)branches:(NSError **)error;
 
 /// List all remotes in the repository
 ///
 /// error - will be filled if an error occurs
 ///
 /// returns an array of NSStrings holding the names of the remotes, or nil if an error occurred
-- (nullable NSArray *)remoteNamesWithError:(NSError **)error;
+- (nullable NSArray<NSString *> *)remoteNamesWithError:(NSError **)error;
 
 /// Get all tags in the repository.
 ///
 /// error - If not NULL, set to any error that occurs.
 ///
 /// Returns an array of GTTag or nil if an error occurs.
-- (nullable NSArray *)allTagsWithError:(NSError **)error;
+- (nullable NSArray<GTTag *> *)allTagsWithError:(NSError **)error;
 
 /// Count all commits in the current branch (HEAD)
 ///
@@ -367,7 +397,7 @@ extern NSString * const GTRepositoryInitOptionsOriginURLString;
 /// error(out)   - will be filled if an error occurs
 ///
 /// returns the local commits, an empty array if there is no remote branch, or nil if an error occurred
-- (nullable NSArray *)localCommitsRelativeToRemoteBranch:(GTBranch *)remoteBranch error:(NSError **)error;
+- (nullable NSArray<GTCommit *> *)localCommitsRelativeToRemoteBranch:(GTBranch *)remoteBranch error:(NSError **)error;
 
 /// Retrieves git's "prepared message" for the next commit, like the default
 /// message pre-filled when committing after a conflicting merge.
@@ -556,6 +586,23 @@ extern NSString * const GTRepositoryInitOptionsOriginURLString;
 ///
 /// Returns the enumerator or nil if an error occurred.
 - (nullable GTEnumerator *)enumeratorForUniqueCommitsFromOID:(GTOID *)fromOID relativeToOID:(GTOID *)relativeOID error:(NSError **)error;
+
+/// Determines the status of a git repository--i.e., whether an operation
+/// (merge, cherry-pick, etc) is in progress.
+///
+/// state - A pointer to set the retrieved state. Must not be NULL.
+/// error - The error if one occurred.
+///
+/// Returns YES if operation was successful, NO otherwise
+- (BOOL)calculateState:(GTRepositoryStateType *)state withError:(NSError **)error;
+
+/// Remove all the metadata associated with an ongoing command like merge,
+/// revert, cherry-pick, etc.  For example: MERGE_HEAD, MERGE_MSG, etc.
+///
+/// error - The error if one occurred.
+///
+/// Returns YES if operation was successful, NO otherwise
+- (BOOL)cleanupStateWithError:(NSError **)error;
 
 @end
 
