@@ -13,7 +13,7 @@ extension NSView {
         get {
             for view in self.subviews {
                 if view is NSControl {
-                    if !(view as! NSControl).enabled {
+                    if !(view as! NSControl).isEnabled {
                         return false
                     }
                 }
@@ -27,7 +27,7 @@ extension NSView {
         set {
             for view in self.subviews {
                 if view is NSControl {
-                    (view as! NSControl).enabled = newValue
+                    (view as! NSControl).isEnabled = newValue
                 }
 
                 view.allEnabled = newValue

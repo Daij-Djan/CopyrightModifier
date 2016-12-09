@@ -16,28 +16,28 @@ extension GTTree {
     /// SHA - the SHA of the entry's blob
     ///
     /// returns a GTTreeEntry and its relative path or nil if there is nothing with the specified Blob SHA
-    public func entryWithBlobSHA(SHA: String) -> (GTTreeEntry, String)? {
+    public func entryWithBlobSHA(_ SHA: String) -> (GTTreeEntry, String)? {
         var item : GTTreeEntry?
         var path : String?
         
         do {
-            try self.enumerateEntriesWithOptions(GTTreeEnumerationOptions.Post, block: { (entry, relativePath, stopPointer) -> Bool in
-                guard entry.type == .Blob else {
+            try self.enumerateEntries(with: GTTreeEnumerationOptions.post, block: { (entry, relativePath, stopPointer) -> Bool in
+                guard entry.type == .blob else {
                     return false;
                 }
                 
                 var br = false
                 autoreleasepool {
-                    let entryPath = relativePath.stringByAppendingString(entry.name)
+                    let entryPath = relativePath + entry.name
                     
                     do {
-                        let obj = try entry.GTObject()
-                        let sha2 = obj.SHA
+                        let obj = try entry.gtObject()
+                        let sha2 = obj.sha
                         
                         if SHA == sha2 {
                             item = entry
                             path = entryPath
-                            stopPointer.memory = true
+                            stopPointer.pointee = true
                             br =  true
                         }
                     }

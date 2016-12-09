@@ -16,17 +16,17 @@ class FileWriter {
     var shouldDoBackup = false
     
     //MARK: private helpers
-    private var cancelWriting = false
+    fileprivate var cancelWriting = false
     
-    private lazy var writerQueue: dispatch_queue_t = {
-        return dispatch_queue_create("writer", DISPATCH_QUEUE_SERIAL)
+    fileprivate lazy var writerQueue: DispatchQueue = {
+        return DispatchQueue(label: "writer", attributes: [])
     }()
     
     //MARK: processing
     
-    func write(fileContents: Array<FileContent>, progressHandler: (NSURL) -> Void, completionHandler: (Bool, Array<(NSURL)>, NSError!) -> Void) {
-        dispatch_async(self.writerQueue) {
-            var writtenFiles = Array<(NSURL)>()
+    func write(_ fileContents: Array<FileContent>, progressHandler: @escaping (URL) -> Void, completionHandler: @escaping (Bool, Array<(URL)>, NSError?) -> Void) {
+        self.writerQueue.async {
+            var writtenFiles = Array<(URL)>()
             
             let result = self.write(fileContents, writtenFiles:&writtenFiles, progressHandler: progressHandler)
         
@@ -37,16 +37,16 @@ class FileWriter {
                 error = NSError(domain: "CopyRightWriter", code: 0, userInfo: [NSLocalizedDescriptionKey:"unkown error"])
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(br, writtenFiles, self.cancelWriting ? nil : error)
             }
         }
     }
     
-    func cancelAllProcessing(completionHandler: () -> Void) {
+    func cancelAllProcessing(_ completionHandler: @escaping () -> Void) {
         cancelWriting = true
-        dispatch_async(self.writerQueue, { () -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        self.writerQueue.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.cancelWriting = false
                 completionHandler()
             })
@@ -54,25 +54,25 @@ class FileWriter {
     }
     //MARK: -
     
-    private func write(fileContents: Array<FileContent>, inout writtenFiles: Array<(NSURL)>, progressHandler: (NSURL) -> Void) -> (Bool, NSError?) {
+    fileprivate func write(_ fileContents: Array<FileContent>, writtenFiles: inout Array<(URL)>, progressHandler: @escaping (URL) -> Void) -> (Bool, NSError?) {
         for content in fileContents {
             if(self.cancelWriting) {
                 return (false, nil)
             }
 
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                progressHandler(content.url)
+            DispatchQueue.main.async(execute: { () -> Void in
+                progressHandler(content.url as URL)
             })
             
             //write it
             do {
-                try content.content.writeToURL(content.url, atomically: false, encoding: NSUTF8StringEncoding)
+                try content.content.write(to: content.url as URL, atomically: false, encoding: String.Encoding.utf8)
             }
             catch let e as NSError {
                 return (false, NSError(domain: "CopyRightWriter", code: 21, userInfo: [NSLocalizedDescriptionKey:"error writing file content to disk for \(content.url): \(e)"]))
             }
             
-            writtenFiles.append(content.url)
+            writtenFiles.append(content.url as (URL))
         }
         
         return (true, nil)

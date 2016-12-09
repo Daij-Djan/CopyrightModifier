@@ -14,15 +14,15 @@ extension String {
         let string = self as NSString;
         let sanitizedString = string.mutableCopy() as! NSMutableString
             
-        sanitizedString.replaceOccurrencesOfString("(", withString: "", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString(")", withString:"", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString("/", withString:"", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString("\\", withString:"", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString("&", withString:"and", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString("?", withString:"", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString("'", withString:"", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString("\"", withString:"", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
-        sanitizedString.replaceOccurrencesOfString(" ", withString:"-", options: NSStringCompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "(", with: "", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: ")", with:"", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "/", with:"", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "\\", with:"", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "&", with:"and", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "?", with:"", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "'", with:"", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: "\"", with:"", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
+        sanitizedString.replaceOccurrences(of: " ", with:"-", options: NSString.CompareOptions(), range: NSMakeRange(0, sanitizedString.length))
             
         return sanitizedString as String
     }

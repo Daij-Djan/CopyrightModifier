@@ -9,18 +9,20 @@
 import Cocoa
 
 protocol PreviewWindowControllerDelegate {
-    func previewWindowController(controller:PreviewWindowController, didFinishSuccessfully:Bool)
+    func previewWindowController(_ controller:PreviewWindowController, didFinishSuccessfully:Bool)
 }
 
 class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTableViewDelegate {
     var fileContents : Array<FileContent>? {
         didSet {
             var newFlags = [Bool]()
-            for var i = 0; i < fileContents?.count; i += 1 {
-                newFlags.append(true)
+            if(fileContents != nil) {
+                for _ in 1...fileContents!.count {
+                    newFlags.append(true)
+                }
             }
             includeFlags = newFlags
-                
+            
             self.tableView.reloadData()
             self.textView.string =  ""
             if let contents = fileContents {
@@ -32,12 +34,14 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
     }
     var checkedFileContents : Array<FileContent>? {
         get {
-            if(fileContents == nil || fileContents?.count != includeFlags.count) {
+            if(fileContents == nil ||
+                fileContents!.count == 0 ||
+                fileContents!.count != includeFlags.count) {
                 return nil
             }
             
             var checked = [FileContent]()
-            for var i = 0; i < fileContents?.count; i += 1 {
+            for i in 0...fileContents!.count-1 {
                 if(includeFlags[i]) {
                     checked.append(fileContents![i])
                 }
@@ -45,7 +49,7 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
             return checked.count > 0 ? checked : nil
         } 
     }
-    private var includeFlags: [Bool]!
+    fileprivate var includeFlags: [Bool]!
     
     var delegate: PreviewWindowControllerDelegate!
 
@@ -58,21 +62,21 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet var textView: NSTextView!
     
-    @IBAction func proceed(sender: AnyObject) {
+    @IBAction func proceed(_ sender: AnyObject) {
         self.delegate.previewWindowController(self, didFinishSuccessfully: true)
     }
     
-    @IBAction func cancel(sender: AnyObject) {
+    @IBAction func cancel(_ sender: AnyObject) {
         self.delegate.previewWindowController(self, didFinishSuccessfully: false)
     }
     
     //MARK: DataSource & delegate
     
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return fileContents == nil ? 0 : fileContents!.count
     }
     
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         if tableColumn!.identifier == "included" {
             return includeFlags[row]
         }
@@ -84,13 +88,13 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
         return nil
     }
     
-    func tableView(tableView: NSTableView, setObjectValue object: AnyObject?, forTableColumn tableColumn: NSTableColumn?, row: Int) {
+    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
         if tableColumn?.identifier == "included" {
             let bool = object! as! NSNumber
             includeFlags[row] = bool.boolValue
         }
     }
-    func tableViewSelectionDidChange(notification: NSNotification) {
+    func tableViewSelectionDidChange(_ notification: Notification) {
         let selectedRow = self.tableView.selectedRow
         self.textView.string = fileContents == nil || selectedRow < 0 ? "" : fileContents![selectedRow
             ].content

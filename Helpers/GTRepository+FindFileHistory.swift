@@ -14,7 +14,7 @@ var GTRepository_cachedHistories = Dictionary<String, [(GTCommit,String)]>()
 extension GTRepository {
     //searches for a file's history
     
-    func findCachedFileHistory(relativeFilePath:String) -> [(GTCommit,String)]? {
+    func findCachedFileHistory(_ relativeFilePath:String) -> [(GTCommit,String)]? {
         var history:[(GTCommit,String)]?
         
         //search in our list of cached repos
@@ -36,16 +36,16 @@ extension GTRepository {
         return history
     }
 
-    func findFileHistory(relativeFilePath:String) -> [(GTCommit,String)]? {
+    func findFileHistory(_ relativeFilePath:String) -> [(GTCommit,String)]? {
         var seen = [(GTCommit,String)]()
 
         //setup enumerator
         var enumerator: GTEnumerator!
         do {
             enumerator = try GTEnumerator(repository: self)
-            enumerator.resetWithOptions( GTEnumeratorOptions.TopologicalSort.union(.TimeSort))
+            enumerator.reset( options: GTEnumeratorOptions.topologicalSort.union(.timeSort))
             let head = try self.headReference()
-            try enumerator.pushSHA(head.OID.SHA)
+            try enumerator.pushSHA(head.oid.sha)
         }
         catch let error as NSError {
             print("cant setup enumerator: \(error)")
@@ -67,7 +67,7 @@ extension GTRepository {
                 //check tree and see if touches file
                 do {
                     //throws error if not seen!
-                    try commit!.tree?.entryWithPath(filePath)
+                    try commit!.tree?.entry(withPath: filePath)
                     assert(commit != nil)
                     
                     seenInCommit = commit
@@ -78,11 +78,11 @@ extension GTRepository {
                     var refound = false
                     
                     //might have been renamed?! see if we can find it via it's sha
-                    if let tree = commit?.tree, oldTree = seenInCommit?.tree {
+                    if let tree = commit?.tree, let oldTree = seenInCommit?.tree {
                         do {
-                            let entry = try oldTree.entryWithPath(filePath)
-                            if entry.type == .Blob {
-                                if let sha = try entry.GTObject().SHA {
+                            let entry = try oldTree.entry(withPath: filePath)
+                            if entry.type == .blob {
+                                if let sha = try entry.gtObject().sha {
                                     if let itemAndPath = tree.entryWithBlobSHA(sha) {
                                         filePath = itemAndPath.1
                                         refound = true
@@ -116,16 +116,16 @@ extension GTRepository {
         var oldPath: String?
         
         autoreleasepool {
-            for entry in seen.reverse() {
+            for entry in seen.reversed() {
                 var sha: String?
                 let path = entry.1
                 
                 //get seen sha AND path
                 do {
                     if let tree = entry.0.tree {
-                        let entry = try tree.entryWithPath(path)
-                        if entry.type == .Blob {
-                            sha = try entry.GTObject().SHA
+                        let entry = try tree.entry(withPath: path)
+                        if entry.type == .blob {
+                            sha = try entry.gtObject().sha
                         }
                     }
                 }
@@ -153,7 +153,7 @@ extension GTRepository {
                 oldPath = path
             }
             
-            changed = changed.reverse()
+            changed = changed.reversed()
         }
         return changed
     }

@@ -8,14 +8,14 @@
 
 import Foundation
 
-extension NSUserDefaults {
-    func runOnce(key:String, block:() -> Bool) -> Bool {
-        let ranAlready = self.boolForKey(key)
+extension UserDefaults {
+    func runOnce(_ key:String, block:() -> Bool) -> Bool {
+        let ranAlready = self.bool(forKey: key)
 
         if(!ranAlready) {
             let runAgain = block()
             if(!runAgain) {
-                self.setBool(true, forKey: key)
+                self.set(true, forKey: key)
             }
         }
     

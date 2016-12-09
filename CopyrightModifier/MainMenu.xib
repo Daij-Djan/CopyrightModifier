@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
         <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
@@ -400,7 +400,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="MIT license" imagePosition="left" alignment="left" inset="2" id="Sgo-xm-OPG">
+                                            <buttonCell type="radio" title="MIT license                                                             " imagePosition="left" alignment="left" inset="2" id="Sgo-xm-OPG">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -485,7 +485,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a custom year" imagePosition="left" alignment="left" tag="2" inset="2" id="R3D-o2-XTC">
+                                            <buttonCell type="radio" title="Use a custom year                            " imagePosition="left" alignment="left" tag="2" inset="2" id="R3D-o2-XTC">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -550,7 +550,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a custom owner" imagePosition="left" alignment="left" tag="2" inset="2" id="iFx-pH-Yz5">
+                                            <buttonCell type="radio" title="Use a custom owner                 " imagePosition="left" alignment="left" tag="2" inset="2" id="iFx-pH-Yz5">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -583,7 +583,7 @@
                                 <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SR8-JK-zrZ">
                                     <rect key="frame" x="18" y="70" width="418" height="44"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="cellSize" width="340" height="18"/>
+                                    <size key="cellSize" width="341" height="18"/>
                                     <size key="intercellSpacing" width="4" height="8"/>
                                     <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="Xsc-9r-qaU">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -595,7 +595,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a fixed author" imagePosition="left" alignment="left" tag="2" inset="2" id="7As-bg-X6E">
+                                            <buttonCell type="radio" title="Use a fixed author                                                          " imagePosition="left" alignment="left" tag="2" inset="2" id="7As-bg-X6E">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -639,7 +639,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a fixed creation date" imagePosition="left" alignment="left" tag="2" inset="2" id="aIJ-YC-rrW">
+                                            <buttonCell type="radio" title="Use a fixed creation date                                              " imagePosition="left" alignment="left" tag="2" inset="2" id="aIJ-YC-rrW">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -690,17 +690,17 @@
                     <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUz-H4-doI">
                         <rect key="frame" x="784" y="204" width="338" height="245"/>
                         <clipView key="contentView" ambiguous="YES" id="vg5-gY-60q">
-                            <rect key="frame" x="1" y="1" width="336" height="243"/>
+                            <rect key="frame" x="1" y="1" width="321" height="243"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView ambiguous="YES" importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="ed9-V7-QRq">
-                                    <rect key="frame" x="0.0" y="0.0" width="336" height="243"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="321" height="243"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="336" height="243"/>
+                                    <size key="minSize" width="321" height="243"/>
                                     <size key="maxSize" width="700" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="336" height="243"/>
+                                    <size key="minSize" width="321" height="243"/>
                                     <size key="maxSize" width="700" height="10000000"/>
                                     <connections>
                                         <outlet property="delegate" destination="Voe-Tx-rLC" id="Wgt-WV-Obl"/>
@@ -714,24 +714,24 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Yos-3F-dyI">
-                            <rect key="frame" x="321" y="1" width="16" height="243"/>
+                            <rect key="frame" x="322" y="1" width="15" height="243"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
                     <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tyi-tt-kMu">
                         <rect key="frame" x="784" y="475" width="338" height="245"/>
                         <clipView key="contentView" ambiguous="YES" id="RXM-dp-ejA">
-                            <rect key="frame" x="1" y="1" width="336" height="243"/>
+                            <rect key="frame" x="1" y="1" width="321" height="243"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView ambiguous="YES" importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Ufw-6d-nub">
-                                    <rect key="frame" x="0.0" y="0.0" width="336" height="243"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="321" height="243"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="336" height="243"/>
+                                    <size key="minSize" width="321" height="243"/>
                                     <size key="maxSize" width="700" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="336" height="243"/>
+                                    <size key="minSize" width="321" height="243"/>
                                     <size key="maxSize" width="700" height="10000000"/>
                                     <connections>
                                         <outlet property="delegate" destination="Voe-Tx-rLC" id="pQk-2h-CZ7"/>
@@ -745,7 +745,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="esc-sN-JCp">
-                            <rect key="frame" x="321" y="1" width="16" height="243"/>
+                            <rect key="frame" x="322" y="1" width="15" height="243"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -1016,28 +1016,28 @@ Gw
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Khy-7s-27L">
-                            <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
+                            <rect key="frame" x="-7" y="-14" width="0.0" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="Bnr-Y8-OXs">
-                            <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                            <rect key="frame" x="-14" y="-7" width="15" height="0.0"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
                     <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iB9-ju-IDH">
                         <rect key="frame" x="608" y="54" width="472" height="626"/>
                         <clipView key="contentView" ambiguous="YES" id="hur-0W-Z99">
-                            <rect key="frame" x="1" y="1" width="454" height="624"/>
+                            <rect key="frame" x="1" y="1" width="455" height="624"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView ambiguous="YES" editable="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="lak-Pm-lE6">
-                                    <rect key="frame" x="0.0" y="0.0" width="454" height="624"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="455" height="624"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="454" height="624"/>
+                                    <size key="minSize" width="455" height="624"/>
                                     <size key="maxSize" width="589" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="454" height="624"/>
+                                    <size key="minSize" width="455" height="624"/>
                                     <size key="maxSize" width="589" height="10000000"/>
                                     <connections>
                                         <outlet property="delegate" destination="Box-eY-YXj" id="5qU-cO-dLK"/>
@@ -1051,7 +1051,7 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="1Z8-Ld-dQU">
-                            <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                            <rect key="frame" x="1" y="1" width="15" height="0.0"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>

@@ -12,9 +12,17 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     override func awakeFromNib() {
         windowController.window!.center()
+        #if DEBUG
+            let env = NSProcessInfo.processInfo().environment
+            if let path = env["UI_TESTING_PATH"] {
+                if let main = windowController as? MainWindowController {
+                    main.path.stringValue = path
+                }
+            }
+        #endif
     }
  
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
     

@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>CopyrightModifierTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>CopyrightModifier_swift.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,12 +22,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>B30538341D04363B00284C9E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B36175C519A4916600186F90</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>B36175D719A4916600186F90</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B3D7D83F1D11584700378BC0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

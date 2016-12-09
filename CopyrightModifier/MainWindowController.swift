@@ -10,21 +10,21 @@ import Cocoa
 
 class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewDelegate, PreviewWindowControllerDelegate {
     //InterfaceState
-    private enum InterfaceState {
-        case Main
-        case Progress
-        case Preview
+    fileprivate enum InterfaceState {
+        case main
+        case progress
+        case preview
     }
-    private var shownState = InterfaceState.Main
+    fileprivate var shownState = InterfaceState.main
     
-    private let writer = FileWriter()
-    private let generator = CopyrightGenerator()
-    private var preparedGenerator: CopyrightGenerator {
+    fileprivate let writer = FileWriter()
+    fileprivate let generator = CopyrightGenerator()
+    fileprivate var preparedGenerator: CopyrightGenerator {
         //setup writer
         generator.searchRecursively = (self.recursive.state == NSOnState)
         generator.includeHiddenFiles = (self.hiddenFiles.state == NSOnState)
-        generator.validFileExtensions = self.patterns.stringValue.componentsSeparatedByString(";")
-        generator.foldersToSkip = self.foldersToSkip.stringValue.componentsSeparatedByString(";")
+        generator.validFileExtensions = self.patterns.stringValue.components(separatedBy: ";")
+        generator.foldersToSkip = self.foldersToSkip.stringValue.components(separatedBy: ";")
         
         generator.findSCMAuthor = (self.authorOptions.selectedTag() == 1)
         generator.findSCMCreationDate = (self.dateOptions.selectedTag() == 1)
@@ -57,27 +57,27 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         if let cell = self.fixedAuthor.cell as? NSTextFieldCell {
             cell.placeholderString = NSUserName()
         }
-        self.fixedDate.dateValue = NSDate()
+        self.fixedDate.dateValue = Date()
         
         //fake url change
         changeLicenseURL(self.theLicenseURL)
     }
     
-    private func setInterfaceState(interfaceState:InterfaceState, fileContents: Array<FileContent>?) {
+    fileprivate func setInterfaceState(_ interfaceState:InterfaceState, fileContents: Array<FileContent>?) {
         guard let view = self.window!.contentView
         else {
             fatalError("cant get contentView")
         }
-        view.allEnabled = interfaceState == InterfaceState.Main
+        view.allEnabled = interfaceState == InterfaceState.main
         
-        if(interfaceState == InterfaceState.Progress) {
-            if(shownState == InterfaceState.Preview) {
+        if(interfaceState == InterfaceState.progress) {
+            if(shownState == InterfaceState.preview) {
                 self.window!.endSheet(self.previewWindowController.window!)
                 self.previewWindowController.window!.orderOut(nil)
                 self.previewWindowController.fileContents = nil
             }
             
-            if(shownState != InterfaceState.Progress) {
+            if(shownState != InterfaceState.progress) {
                 self.progressLabelDate.stringValue = "...";
                 self.progressLabelAuthor.stringValue = "...";
                 self.progressLabel.stringValue = "...";
@@ -85,26 +85,26 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                 self.progressIndicator.startAnimation(nil)
             }
         }
-        else if(interfaceState == InterfaceState.Preview) {
-            if(shownState == InterfaceState.Progress) {
+        else if(interfaceState == InterfaceState.preview) {
+            if(shownState == InterfaceState.progress) {
                 self.progressIndicator.stopAnimation(nil)
                 self.window!.endSheet(self.progressSheet)
                 self.progressSheet.orderOut(nil)
             }
             
-            if(shownState != InterfaceState.Preview) {
+            if(shownState != InterfaceState.preview) {
                 self.previewWindowController.delegate = self
                 self.previewWindowController.fileContents = fileContents
                 self.window!.beginSheet(self.previewWindowController.window!, completionHandler: nil)
             }
         }
-        else if(interfaceState == InterfaceState.Main) {
-            if(shownState == InterfaceState.Progress) {
+        else if(interfaceState == InterfaceState.main) {
+            if(shownState == InterfaceState.progress) {
                 self.progressIndicator.stopAnimation(nil)
                 self.window!.endSheet(self.progressSheet)
                 self.progressSheet.orderOut(nil)
             }
-            else if(shownState == InterfaceState.Preview) {
+            else if(shownState == InterfaceState.preview) {
                 self.window!.endSheet(self.previewWindowController.window!)
                 self.previewWindowController.window!.orderOut(nil)
                 self.previewWindowController.fileContents = nil
@@ -116,7 +116,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     
     var processingEnabled: Bool {
         if self.path.stringValue.characters.count > 0 {
-            return NSFileManager.defaultManager().fileExistsAtPath(self.path.stringValue)
+            return FileManager.default.fileExists(atPath: self.path.stringValue)
         }
         
         return false
@@ -125,7 +125,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     var pathIsFolder: Bool {
         if self.path.stringValue.characters.count > 0 {
             var isDir : ObjCBool = false
-            if NSFileManager.defaultManager().fileExistsAtPath(self.path.stringValue, isDirectory: &isDir) {
+            if FileManager.default.fileExists(atPath: self.path.stringValue, isDirectory: &isDir) {
                 return isDir.boolValue
             }
         }
@@ -133,18 +133,18 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         return false
     }
     
-    override func controlTextDidChange(obj: NSNotification) {
+    override func controlTextDidChange(_ obj: Notification) {
         let textField = obj.object as! NSTextField?
         if(textField == self.theLicenseURL) {
             self.loadLicenseURL()
         }
         else {
-            self.anyClick(obj.object!)
+            self.anyClick(obj.object! as AnyObject)
         }
     }
 
-    func textDidChange(notification: NSNotification) {
-        self.anyClick(notification.object!)
+    func textDidChange(_ notification: Notification) {
+        self.anyClick(notification.object! as AnyObject)
     }
     
     func loadLicenseURL() {
@@ -155,18 +155,20 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         let originalUrlString = self.theLicenseURL.stringValue
         if originalUrlString.characters.count > 0 {
             let urlString = self.theLicenseURL.stringValue
-            let url = NSURL(string: urlString)
+            let url = URL(string: urlString)
             if(url != nil) {
-                let request = NSURLRequest(URL: url!)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
-                    if response is NSHTTPURLResponse && originalUrlString == self.theLicenseURL.stringValue {
-                        let httpResponse = response as! NSHTTPURLResponse
-                        if let d = data where httpResponse.statusCode == 200 {
-                            if self.theLicenseURL.stringValue == urlString {
-                                let str = NSString(data: d, encoding: NSUTF8StringEncoding)
-                                self.theLicenseText.string = str as? String
-                                self.loadedLicenseURL = url
-                                self.anyClick(self.theLicenseURL)
+                let request = URLRequest(url: url!)
+                NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main, completionHandler: { (response, data, error) -> Void in
+                    if response is HTTPURLResponse && originalUrlString == self.theLicenseURL.stringValue {
+                        let httpResponse = response as! HTTPURLResponse
+                        if let d = data, httpResponse.statusCode == 200 {
+                            let str = NSString(data: d, encoding: String.Encoding.utf8.rawValue)
+                            DispatchQueue.main.async {
+                                if self.theLicenseURL.stringValue == urlString {
+                                    self.theLicenseText.string = str as? String
+                                    self.loadedLicenseURL = url
+                                    self.anyClick(self.theLicenseURL)
+                                }
                             }
                         }
                     }
@@ -203,7 +205,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     @IBOutlet weak var copyrightYearTillNow: NSButton!
     @IBOutlet weak var licenseOptions: NSMatrix!
     @IBOutlet var theLicenseURL: NSTextField!
-    private var loadedLicenseURL : NSURL?
+    fileprivate var loadedLicenseURL : URL?
     
     //the template to change
     @IBOutlet var theLicenseText: NSTextView!
@@ -223,8 +225,8 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     //preview panel
     @IBOutlet var previewWindowController: PreviewWindowController!
     
-    @IBAction func openPath(sender: AnyObject) {
-        if self.path.hidden {
+    @IBAction func openPath(_ sender: AnyObject) {
+        if self.path.isHidden {
             return
         }
         
@@ -234,25 +236,28 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         panel.canChooseFiles = true
         panel.allowsMultipleSelection = false
         
-        panel.beginWithCompletionHandler { (result) -> Void in
+        panel.begin { (result) -> Void in
             if result == NSFileHandlingPanelOKButton {
-                for url in panel.URLs {
-                    if !url.fileURL {
+                for url in panel.urls {
+                    if !url.isFileURL {
                         continue
                     }
                     
-                    self.path.stringValue = url.path!
+                    self.path.stringValue = url.path
                     self.anyClick(sender)
                 }
             }
         }
     }
     
-    @IBAction func processPath(sender: AnyObject) {
-        let url = NSURL(fileURLWithPath: self.path.stringValue, isDirectory: true)
+    @IBAction func processPath(_ sender: AnyObject) {
+        //grab responder state
+        self.window?.makeFirstResponder(sender as! NSResponder)
+        
+        let url = URL(fileURLWithPath: self.path.stringValue)
         
         //disable UI
-        self.setInterfaceState(InterfaceState.Progress, fileContents: nil)
+        self.setInterfaceState(InterfaceState.progress, fileContents: nil)
         
         //output
         let myGenerator = self.preparedGenerator;
@@ -276,95 +281,95 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                 if e != nil {
                     let alert = NSAlert(error: e!)
                     alert.runModal()
-                    self.setInterfaceState(InterfaceState.Main, fileContents: nil)
+                    self.setInterfaceState(InterfaceState.main, fileContents: nil)
                 }
                 else {
-                    self.setInterfaceState(InterfaceState.Preview, fileContents: outputs)
+                    self.setInterfaceState(InterfaceState.preview, fileContents: outputs)
                 }
         })
     }
     
-    @IBAction func anyClick(sender: AnyObject) {
-        self.willChangeValueForKey("processingEnabled")
-        self.didChangeValueForKey("processingEnabled")
-        self.willChangeValueForKey("pathIsFolder")
-        self.didChangeValueForKey("pathIsFolder")
+    @IBAction func anyClick(_ sender: AnyObject) {
+        self.willChangeValue(forKey: "processingEnabled")
+        self.didChangeValue(forKey: "processingEnabled")
+        self.willChangeValue(forKey: "pathIsFolder")
+        self.didChangeValue(forKey: "pathIsFolder")
     }
 
-    @IBAction func changeLicenseURL(sender: AnyObject) {
+    @IBAction func changeLicenseURL(_ sender: AnyObject) {
         var URLString = ""
-        
+         
         let row = self.licenseOptions.selectedRow
         let column = self.licenseOptions.selectedColumn
 
         if(column == 0) {
             //apache
             if(row == 0) {
-                URLString = "http://licenses.pich.info/apache2.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/apache2.txt"
             }
             //gpl
             else if(row == 1) {
-                URLString = "http://licenses.pich.info/gpl_v3.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/gpl_v3.txt"
             }
             //mit
             else if(row == 2) {
-                URLString = "http://licenses.pich.info/mit.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/mit.txt"
             }
             //mozilla
             else if(row == 3) {
-                URLString = "http://licenses.pich.info/mozilla_v2.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/mozilla_v2.txt"
             }
             //eclipse
             else if(row == 4) {
-                URLString = "http://licenses.pich.info/epl.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/epl.txt"
             }
         }
         else if(column == 1) {
             //bsd3
             if(row == 0) {
-                URLString = "http://licenses.pich.info/bsd3.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/bsd3.txt"
             }
             //bsd2
             else if(row == 1) {
-                URLString = "http://licenses.pich.info/bsd2.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/bsd2.txt"
             }
            //lgpl
             else if(row == 2) {
-                URLString = "http://licenses.pich.info/lgpl_v3.txt"
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/lgpl_v3.txt"
             }
             //CD
             else if(row == 3) {
-                URLString = "http://licenses.pich.info/cddl.txt"
-            }
+                URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/cddl.txt"
+            } 
             //Custom...
             else if(row == 4) {
                 //none ;)
             }
         }
         
-        self.theLicenseURL.enabled = URLString.characters.count == 0
+        self.theLicenseURL.isEnabled = URLString.characters.count == 0
         self.theLicenseURL.stringValue = URLString
         loadLicenseURL()
     }
     
-    @IBAction func cancelProcessing(sender: AnyObject) {
+    @IBAction func cancelProcessing(_ sender: AnyObject) {
         self.preparedGenerator.cancelAllProcessing { () -> Void in
         }
     }
  
     //-
     
-    func previewWindowController(controller:PreviewWindowController, didFinishSuccessfully:Bool) {
-        if let contents = controller.checkedFileContents where didFinishSuccessfully {
-            self.setInterfaceState(InterfaceState.Progress, fileContents: contents)
+    func previewWindowController(_ controller:PreviewWindowController, didFinishSuccessfully:Bool) {
+        if let contents = controller.checkedFileContents, didFinishSuccessfully {
+            self.setInterfaceState(InterfaceState.progress, fileContents: contents)
             self.writer.write(contents, progressHandler: { (url) -> Void in
                 self.progressLabel.stringValue = url.lastPathComponent!
                 }, completionHandler: { (ok, urls, error) -> Void in
-                    self.setInterfaceState(InterfaceState.Main, fileContents: nil)
+                    self.setInterfaceState(InterfaceState.main, fileContents: nil)
             })
         }
         else {
-            self.setInterfaceState(InterfaceState.Main, fileContents: nil)
+            self.setInterfaceState(InterfaceState.main, fileContents: nil)
         }
     }
 }

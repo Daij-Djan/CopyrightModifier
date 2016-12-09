@@ -14,7 +14,7 @@ var GTRepository_cachedRepositories = Dictionary<String, GTRepository>()
 extension GTRepository {
     //searches for the closest repo for a given fileUrl. Same as the git CLI client.
     
-    class func findCachedRepositoryWithURL(fileUrl:NSURL) -> GTRepository? {
+    class func findCachedRepositoryWithURL(_ fileUrl:URL) -> GTRepository? {
         
         //search on disk
         var path = fileUrl.path
@@ -24,15 +24,15 @@ extension GTRepository {
         //search in our list of cached repos
         if GTRepository_cachedRepositories.count > 0 {
             while(repo == nil && path != nil) {
-                repo = GTRepository_cachedRepositories[path!]
+                repo = GTRepository_cachedRepositories[path]
                 
                 //change stringByDeletingLastPathComponent behaviour ;)
                 if path == "/" {
                     path = nil
                 }
                 else {
-                    let url = NSURL(fileURLWithPath: path!)
-                    path = url.URLByDeletingLastPathComponent?.path
+                    let url = URL(fileURLWithPath: path)
+                    path = url.deletingLastPathComponent().path
                 }
             }
         }
@@ -46,16 +46,16 @@ extension GTRepository {
         }
 
         //search on disk
-        repo = findRepositoryWithURL(NSURL(fileURLWithPath: path!))
+        repo = findRepositoryWithURL(URL(fileURLWithPath: path))
         
         if(repo != nil) {
-            GTRepository_cachedRepositories[path!] = repo
+            GTRepository_cachedRepositories[path] = repo
         }
 
         return repo
     }
 
-    class func findRepositoryWithURL(fileUrl:NSURL) -> GTRepository? {
+    class func findRepositoryWithURL(_ fileUrl:URL) -> GTRepository? {
         //search on disk
         var path = fileUrl.path
         var repo:GTRepository?
@@ -64,9 +64,9 @@ extension GTRepository {
         path = fileUrl.path
         
         while(repo == nil && path != nil) {
-            let url = NSURL(fileURLWithPath: path!)
+            let url = URL(fileURLWithPath: path)
             do {
-                try repo = GTRepository(URL: url)
+                try repo = GTRepository(url: url)
                 if repo != nil {
                     return repo;
                 }
@@ -79,8 +79,8 @@ extension GTRepository {
                 path = nil
             }
             else {
-                let url = NSURL(fileURLWithPath: path!)
-                path = url.URLByDeletingLastPathComponent?.path
+                let url = URL(fileURLWithPath: path)
+                path = url.deletingLastPathComponent().path
             }
         }
         

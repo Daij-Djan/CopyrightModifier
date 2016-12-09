@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FileInfoOptions : OptionSetType {
+struct FileInfoOptions : OptionSet {
     let rawValue : Int
     static let GIT = FileInfoOptions(rawValue: 1 << 0)
     static let LOCAL = FileInfoOptions(rawValue: 1 << 2)

@@ -9,12 +9,12 @@
 import Foundation
 import ObjectiveGit
 
-extension NSFileManager {
+extension FileManager {
     var scmLog:Bool { get { return false } }
 
     // MARK: SCM state
 
-    func SCMStateOfFileAtURL(fileUrl:NSURL) ->FileInfoOptions {
+    func SCMStateOfFileAtURL(_ fileUrl:URL) ->FileInfoOptions {
         //check git
         if self.gitStateOfFileAtURL(fileUrl) {
             return FileInfoOptions.GIT.union(.LOCAL)
@@ -23,15 +23,15 @@ extension NSFileManager {
         return FileInfoOptions.LOCAL
     }
     
-    func gitStateOfFileAtURL(fileUrl:NSURL) -> Bool {
+    func gitStateOfFileAtURL(_ fileUrl:URL) -> Bool {
         let repo: GTRepository? = GTRepository.findCachedRepositoryWithURL(fileUrl)
         return repo != nil
     }
 
     // MARK: date
     
-    func creationDateOfFileAtURL(fileUrl:NSURL, options:FileInfoOptions) -> NSDate! {
-        var date:NSDate?
+    func creationDateOfFileAtURL(_ fileUrl:URL, options:FileInfoOptions) -> Date! {
+        var date:Date?
         
         //get first git date
         if options.contains(.GIT) {
@@ -48,12 +48,12 @@ extension NSFileManager {
         return date
     }
 
-    private func gitCreationDateOfFileAtURL(fileUrl:NSURL) -> NSDate? {
+    fileprivate func gitCreationDateOfFileAtURL(_ fileUrl:URL) -> Date? {
         if let repo = GTRepository.findCachedRepositoryWithURL(fileUrl) {
             if let repoPath = repo.fileURL.path {
-                if var relativePath = fileUrl.path?.stringByReplacingOccurrencesOfString(repoPath, withString: "") {
+                if var relativePath = fileUrl.path?.replacingOccurrences(of: repoPath, with: "") {
                     if(relativePath.hasPrefix("/")) {
-                        relativePath = relativePath.substringFromIndex(relativePath.startIndex.advancedBy(1))
+                        relativePath = relativePath.substring(from: relativePath.characters.index(relativePath.startIndex, offsetBy: 1))
                     }
                     if let commitAndPath = repo.findCachedFileHistory(relativePath)?.last {
                         return commitAndPath.0.commitDate
@@ -64,11 +64,11 @@ extension NSFileManager {
         return nil
     }
     
-    private func localCreationDateOfFileAtURL(fileUrl:NSURL) -> NSDate? {
+    fileprivate func localCreationDateOfFileAtURL(_ fileUrl:URL) -> Date? {
         //get file date
         var creationDate: AnyObject?
         do {
-            try fileUrl.getResourceValue(&creationDate, forKey:NSURLCreationDateKey)
+            try (fileUrl as NSURL).getResourceValue(&creationDate, forKey:URLResourceKey.creationDateKey)
         }
         catch {
             creationDate = nil
@@ -78,25 +78,25 @@ extension NSFileManager {
             print("local date = \(creationDate)")
         }
         
-        return creationDate as? NSDate
+        return creationDate as? Date
     }
     
     // MARK: author
 
-    func authorOfFileAtURL(fileUrl:NSURL, options:FileInfoOptions, matchToOSX:Bool) -> String {
+    func authorOfFileAtURL(_ fileUrl:URL, options:FileInfoOptions, matchToOSX:Bool) -> String {
         var author:NSString = ""
         
         //get git author
         if options.contains(.GIT) {
             if let gitAuthor = self.gitAuthorOfFileAtURL(fileUrl) {
-                author = gitAuthor
+                author = gitAuthor as NSString
             }
         }
         
         //fallback to native
         if author.length == 0 {
             if options.contains(.LOCAL) {
-                author = self.localAuthorOfFileAtURL(fileUrl)
+                author = self.localAuthorOfFileAtURL(fileUrl) as NSString
             }
         }
     
@@ -106,8 +106,8 @@ extension NSFileManager {
                 let longUserName = NSFullUserName()
                 let shortUserName = NSUserName()
             
-                if(author.isEqualToString(shortUserName)) {
-                    author = longUserName
+                if(author.isEqual(to: shortUserName)) {
+                    author = longUserName as NSString
                 }
             }
         }
@@ -115,19 +115,19 @@ extension NSFileManager {
         return author as String
     }
 
-    private func gitAuthorOfFileAtURL(fileUrl:NSURL) -> String? {
+    fileprivate func gitAuthorOfFileAtURL(_ fileUrl:URL) -> String? {
         if let repo = GTRepository.findCachedRepositoryWithURL(fileUrl) {
             if let repoPath = repo.fileURL.path {
-                if var relativePath = fileUrl.path?.stringByReplacingOccurrencesOfString(repoPath, withString: "") {
+                if var relativePath = fileUrl.path?.replacingOccurrences(of: repoPath, with: "") {
                     if(relativePath.hasPrefix("/")) {
-                        relativePath = relativePath.substringFromIndex(relativePath.startIndex.advancedBy(1))
+                        relativePath = relativePath.substring(from: relativePath.characters.index(relativePath.startIndex, offsetBy: 1))
                     }
                     if let commitAndPath = repo.findCachedFileHistory(relativePath)?.last {
                         if let sig = commitAndPath.0.author {
                             //sapient hack
-                            if let name = sig.name where sig.email?.hasSuffix("@sapient.com") == true {
-                                let set = NSCharacterSet.decimalDigitCharacterSet()
-                                return name.stringByTrimmingCharactersInSet(set)
+                            if let name = sig.name, sig.email?.hasSuffix("@sapient.com") == true {
+                                let set = CharacterSet.decimalDigits
+                                return name.trimmingCharacters(in: set)
                             }
                             return sig.name != nil ? sig.name : sig.email
                         }
@@ -138,7 +138,7 @@ extension NSFileManager {
         return nil
     }
 
-    private func localAuthorOfFileAtURL(fileUrl:NSURL) -> String {
+    fileprivate func localAuthorOfFileAtURL(_ fileUrl:URL) -> String {
         let username: NSString
         
         //native
@@ -147,10 +147,10 @@ extension NSFileManager {
         
         //fallback to native
         if(longUserName.characters.count > 0) {
-            username = longUserName
+            username = longUserName as NSString
         }
         else {
-            username = shortUserName
+            username = shortUserName as NSString
         }
         
         if self.scmLog && username.length > 0 {

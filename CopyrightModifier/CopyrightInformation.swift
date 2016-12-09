@@ -9,7 +9,7 @@
 import Foundation
 
 struct CopyrightInformation {
-    var fileURL: NSURL
+    var fileURL: URL
     var creationDateString: String
     var yearString: String
     var authorName: String

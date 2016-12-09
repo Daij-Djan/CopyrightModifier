@@ -12,9 +12,9 @@ class CopyrightGenerator {
     //MARK: constants
     class func defaultLicenseText() -> String {
         //for starters, we use the template stored on disk
-        if let URL = NSBundle.mainBundle().URLForResource("DefaultMinimalLicense", withExtension: "txt") {
+        if let URL = Bundle.main.url(forResource: "DefaultMinimalLicense", withExtension: "txt") {
             do {
-                let txt = try NSString(contentsOfURL: URL, encoding: NSUTF8StringEncoding)
+                let txt = try NSString(contentsOf: URL, encoding: String.Encoding.utf8.rawValue)
                 return txt as String
             }
             catch {
@@ -38,7 +38,7 @@ class CopyrightGenerator {
     var fixedAuthor = NSUserName()
     var tryToMatchAuthor = true
     var findSCMCreationDate = true
-    var fixedDate = NSDate()
+    var fixedDate = Date()
     
     var extraCopyrightOwner: String? = nil
     var extraCopyrightYear: Int? = nil
@@ -49,9 +49,9 @@ class CopyrightGenerator {
     var copyrightTemplate: String = ""
     class func defaultCopyrightTemplate() -> String {
         //for starters, we use the template stored on disk
-        if let URL = NSBundle.mainBundle().URLForResource("DefaultTemplate", withExtension: "txt") {
+        if let URL = Bundle.main.url(forResource: "DefaultTemplate", withExtension: "txt") {
             do {
-                let txt = try NSString(contentsOfURL: URL, encoding: NSUTF8StringEncoding)
+                let txt = try NSString(contentsOf: URL, encoding: String.Encoding.utf8.rawValue)
                 return txt as String
             }
             catch {
@@ -67,22 +67,22 @@ class CopyrightGenerator {
     var maxiumNumberOfFiles = 0
     
     //MARK: private helpers
-    private var cancelWriting = false
+    fileprivate var cancelWriting = false
     
-    private lazy var generatorQueue: dispatch_queue_t = {
-        return dispatch_queue_create("generator", DISPATCH_QUEUE_SERIAL)
+    fileprivate lazy var generatorQueue: DispatchQueue = {
+        return DispatchQueue(label: "generator", attributes: [])
     }()
     
-    private func dateStringForDate(date: NSDate) -> NSString {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        return dateFormatter.stringFromDate(date)
+    fileprivate func dateStringForDate(_ date: Date) -> NSString {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        return dateFormatter.string(from: date) as NSString
     }
     
-    private func yearStringForDate(year: Int) -> NSString {
+    fileprivate func yearStringForDate(_ year: Int) -> NSString {
         if(self.copyrightYearTillNow) {
-            let nowYear = NSCalendar.currentCalendar().component(NSCalendarUnit.Year, fromDate: NSDate())
+            let nowYear = (Calendar.current as NSCalendar).component(NSCalendar.Unit.year, from: Date())
             if(year != nowYear) {
                 return NSString(format: "%d till %d", min(year, nowYear), max(year, nowYear))
 
@@ -93,8 +93,8 @@ class CopyrightGenerator {
     
     //MARK: processing
     
-    func processURL(url: NSURL, progressHandler: (NSURL, CopyrightInformation?) -> Void, completionHandler: (Bool, Array<(FileContent)>, NSError!) -> Void) {
-        dispatch_async(self.generatorQueue) {
+    func processURL(_ url: URL, progressHandler: @escaping (URL, CopyrightInformation?) -> Void, completionHandler: @escaping (Bool, Array<(FileContent)>, NSError?) -> Void) {
+        self.generatorQueue.async {
             var generatedOutputs = Array<(FileContent)>()
          
             let result = self.processURL(url,
@@ -111,16 +111,16 @@ class CopyrightGenerator {
                 error = NSError(domain: "CopyRightWriter", code: 0, userInfo: [NSLocalizedDescriptionKey:"unkown error"])
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(br, generatedOutputs, self.cancelWriting ? nil : error)
             }
         }
     }
     
-    func cancelAllProcessing(completionHandler: () -> Void) {
+    func cancelAllProcessing(_ completionHandler: @escaping () -> Void) {
         cancelWriting = true
-        dispatch_async(self.generatorQueue, { () -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        self.generatorQueue.async(execute: { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.cancelWriting = false
                 completionHandler()
             })
@@ -129,15 +129,15 @@ class CopyrightGenerator {
     
     //MARK: -
     
-    private func processURL(url: NSURL, inout generatedOutputs: Array<(FileContent)>, progressHandler: (NSURL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
+    fileprivate func processURL(_ url: URL, generatedOutputs: inout Array<(FileContent)>, progressHandler: (URL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
         //check SCM  and proceed
-        let scmFileInfoOptions = NSFileManager.defaultManager().SCMStateOfFileAtURL(url)
+        let scmFileInfoOptions = FileManager.default.SCMStateOfFileAtURL(url)
         let fileInfoOptions = scmFileInfoOptions.union(.LOCAL)
         
         //read isDir from url
         var isDir: AnyObject?
         do {
-            try url.getResourceValue(&isDir, forKey:NSURLIsDirectoryKey)
+            try (url as NSURL).getResourceValue(&isDir, forKey:URLResourceKey.isDirectoryKey)
         }
         catch {
             print("error reading isDir url key")
@@ -145,7 +145,7 @@ class CopyrightGenerator {
         
         let isDirectory = isDir! as! NSNumber
         if !isDirectory.boolValue {
-            if self.isValidExtension(url.pathExtension!) {
+            if self.isValidExtension(url.pathExtension) {
                 let res = self.processFile(url,
                                            fileInfoOptions:fileInfoOptions,
                                            generatedOutputs:&generatedOutputs,
@@ -169,14 +169,14 @@ class CopyrightGenerator {
         return (true, nil)
     }
     
-    private func isValidExtension(ext:String) -> Bool {
+    fileprivate func isValidExtension(_ ext:String) -> Bool {
         guard let validFileExtensions = self.validFileExtensions else {
             return true; //nil is ok
         }
         if validFileExtensions.count > 0 {
             for allowedExt in validFileExtensions {
-                let trimmedExt = ext.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-                if(allowedExt == "*" || allowedExt.caseInsensitiveCompare(trimmedExt) == NSComparisonResult.OrderedSame) {
+                let trimmedExt = ext.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
+                if(allowedExt == "*" || allowedExt.caseInsensitiveCompare(trimmedExt) == ComparisonResult.orderedSame) {
                     return true
                 }
             }
@@ -185,15 +185,15 @@ class CopyrightGenerator {
         return true
     }
 
-    private func shouldVisitFolder(dirUrl:NSURL) -> Bool {
-        guard let name = dirUrl.lastPathComponent?.lowercaseString else {
+    fileprivate func shouldVisitFolder(_ dirUrl:URL) -> Bool {
+        guard let name = dirUrl.lastPathComponent.lowercased() else {
             return false //?
         }
         
         //read IsPackageKey from url and skip packages
         var isPackage: AnyObject?
         do {
-            try dirUrl.getResourceValue(&isPackage, forKey:NSURLIsPackageKey)
+            try (dirUrl as NSURL).getResourceValue(&isPackage, forKey:URLResourceKey.isPackageKey)
         }
         catch {
             print("error reading IsPackageKey url key")
@@ -205,7 +205,7 @@ class CopyrightGenerator {
         }
         
         //skip frameworks
-        if( name.rangeOfString(".framework") != nil) {
+        if( name.range(of: ".framework") != nil) {
             print("skip framework: \(name)")
             return false
         }
@@ -214,7 +214,7 @@ class CopyrightGenerator {
         //        print("go into \(dirUrl)")
         if let foldersToSkip = self.foldersToSkip {
             for folderToSkip in foldersToSkip {
-                if( name.caseInsensitiveCompare(folderToSkip) == .OrderedSame ) {
+                if( name.caseInsensitiveCompare(folderToSkip) == .orderedSame ) {
                     return false
                 }
             }
@@ -222,7 +222,7 @@ class CopyrightGenerator {
         return true
     }
 
-    private func processDirectory(dirUrl:NSURL, fileInfoOptions:FileInfoOptions, inout generatedOutputs: Array<(FileContent)>, progressHandler: (NSURL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
+    fileprivate func processDirectory(_ dirUrl:URL, fileInfoOptions:FileInfoOptions, generatedOutputs: inout Array<(FileContent)>, progressHandler: @escaping (URL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
 
         //max
         if(self.maxiumNumberOfFiles > 0 && generatedOutputs.count >= self.maxiumNumberOfFiles) {
@@ -235,19 +235,19 @@ class CopyrightGenerator {
         
         //report progress
 //        print(dirUrl)
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             progressHandler(dirUrl, nil)
         }
         
         //enumerate content
-        var options = NSDirectoryEnumerationOptions.SkipsPackageDescendants
-        options.unionInPlace(.SkipsSubdirectoryDescendants) //we recurse manually
+        var options = FileManager.DirectoryEnumerationOptions.skipsPackageDescendants
+        options.formUnion(.skipsSubdirectoryDescendants) //we recurse manually
         if(self.includeHiddenFiles == false) {
-            options.unionInPlace(.SkipsHiddenFiles)
+            options.formUnion(.skipsHiddenFiles)
         }
         
-        let keys = [NSURLIsDirectoryKey, NSURLCreationDateKey, NSURLIsPackageKey]
-        let enumerator = NSFileManager.defaultManager().enumeratorAtURL(dirUrl, includingPropertiesForKeys: keys, options: options) { (url, error) -> Bool in
+        let keys = [URLResourceKey.isDirectoryKey, URLResourceKey.creationDateKey, URLResourceKey.isPackageKey]
+        let enumerator = FileManager.default.enumerator(at: dirUrl, includingPropertiesForKeys: keys, options: options) { (url, error) -> Bool in
             print("failed to enumerate contents for \(url): \(error)")
             return false
         }
@@ -256,11 +256,11 @@ class CopyrightGenerator {
         }
         
         //process each enumerated child
-        let array = enumerator!.allObjects as! [NSURL]
+        let array = enumerator!.allObjects as! [URL]
         for url in array {
             var isDir: AnyObject?
             do {
-                try url.getResourceValue(&isDir, forKey:NSURLIsDirectoryKey)
+                try (url as NSURL).getResourceValue(&isDir, forKey:URLResourceKey.isDirectoryKey)
             }
             catch {
                 print("error reading isDirectory url key for \(url)")
@@ -268,7 +268,7 @@ class CopyrightGenerator {
             }
             var creationDate: AnyObject?
             do {
-                try url.getResourceValue(&creationDate, forKey:NSURLCreationDateKey)
+                try (url as NSURL).getResourceValue(&creationDate, forKey:URLResourceKey.creationDateKey)
             }
             catch {
                 print("error reading creationDate url key for \(url)")
@@ -277,7 +277,7 @@ class CopyrightGenerator {
             
             let isDirectory = isDir! as! NSNumber
             if !isDirectory.boolValue {
-                if self.isValidExtension(url.pathExtension!) {
+                if self.isValidExtension(url.pathExtension) {
                     let res = processFile(url,
                                           fileInfoOptions:fileInfoOptions,
                                           generatedOutputs:&generatedOutputs,
@@ -306,7 +306,7 @@ class CopyrightGenerator {
         return (true, nil)
     }
     
-    private func processFile(fileUrl:NSURL, fileInfoOptions:FileInfoOptions, inout generatedOutputs: Array<(FileContent)>, progressHandler: (NSURL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
+    fileprivate func processFile(_ fileUrl:URL, fileInfoOptions:FileInfoOptions, generatedOutputs: inout Array<(FileContent)>, progressHandler: @escaping (URL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
         //check if canceled
         if(self.cancelWriting) {
             return (false, nil)
@@ -319,14 +319,14 @@ class CopyrightGenerator {
         let info = self.copyrightInformationForFile(fileUrl, fileInfoOptions: fileInfoOptions)
         
         //report progress
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             progressHandler(fileUrl, info)
         }
         
         //read file content
         let content:NSMutableString
         do {
-            content = try NSMutableString(contentsOfURL: fileUrl, encoding: NSUTF8StringEncoding)
+            content = try NSMutableString(contentsOf: fileUrl, encoding: String.Encoding.utf8.rawValue)
         }
         catch let anyError as NSError {
             return (false, NSError(domain: "CopyRightWriter", code: 20, userInfo: [NSLocalizedDescriptionKey:"error reading file content for \(fileUrl): \(anyError)"]))
@@ -348,14 +348,14 @@ class CopyrightGenerator {
         return (true, nil)
     }
     
-    func adaptContent(content:NSMutableString, fileUrl:NSURL, fileInfo:CopyrightInformation) {
+    func adaptContent(_ content:NSMutableString, fileUrl:URL, fileInfo:CopyrightInformation) {
         var oldHeader = ""
         
         //RM OLD HEADER
         if(self.removeOldHeaderIfNeeded) {
             //find old header
             var inComment = false
-            content.enumerateLinesUsingBlock({ (l, stop) -> Void in
+            content.enumerateLines({ (l, stop) -> Void in
                 let line = l as NSString
                 var shouldStop: ObjCBool = true
                 
@@ -375,44 +375,44 @@ class CopyrightGenerator {
                     inComment = false
                 }
                 
-                stop.initialize(shouldStop)
+                stop.initialize(to: shouldStop)
             })
             
             //rm old header
             if oldHeader.characters.count > 0 {
-                content.replaceOccurrencesOfString(oldHeader, withString: "", options: NSStringCompareOptions.AnchoredSearch, range: NSMakeRange(0, oldHeader.characters.count))
+                content.replaceOccurrences(of: oldHeader, with: "", options: NSString.CompareOptions.anchored, range: NSMakeRange(0, oldHeader.characters.count))
             }
         }
         
         //ADD NEW HEADER
         if self.addNewHeader {
             //prepend new header
-            let header = self.generateCopyrightHeader(fileUrl.lastPathComponent!, info: fileInfo)
-            content.insertString(header, atIndex: 0)
+            let header = self.generateCopyrightHeader(fileUrl.lastPathComponent, info: fileInfo)
+            content.insert(header, at: 0)
         }
     }
 
-    func generateCopyrightHeader(fileName:String, info:CopyrightInformation) -> String {
+    func generateCopyrightHeader(_ fileName:String, info:CopyrightInformation) -> String {
         let header = NSMutableString(string: self.copyrightTemplate);
         
-        header.replaceOccurrencesOfString("${LICENSETEXT}", withString: self.licenseText, options: NSStringCompareOptions(), range: NSMakeRange(0, header.length))
+        header.replaceOccurrences(of: "${LICENSETEXT}", with: self.licenseText, options: NSString.CompareOptions(), range: NSMakeRange(0, header.length))
         
-        header.replaceOccurrencesOfString("${FILENAME}", withString: fileName, options: NSStringCompareOptions(), range: NSMakeRange(0, header.length))
-        header.replaceOccurrencesOfString("${CREATIONDATE}", withString: info.creationDateString, options: NSStringCompareOptions(), range: NSMakeRange(0, header.length))
-        header.replaceOccurrencesOfString("${AUTHOR}", withString: info.authorName, options: NSStringCompareOptions(), range: NSMakeRange(0, header.length))
-        header.replaceOccurrencesOfString("${OWNER}", withString: info.ownerName, options: NSStringCompareOptions(), range: NSMakeRange(0, header.length))
-        header.replaceOccurrencesOfString("${YEAR}", withString: info.yearString, options: NSStringCompareOptions(), range: NSMakeRange(0, header.length))
+        header.replaceOccurrences(of: "${FILENAME}", with: fileName, options: NSString.CompareOptions(), range: NSMakeRange(0, header.length))
+        header.replaceOccurrences(of: "${CREATIONDATE}", with: info.creationDateString, options: NSString.CompareOptions(), range: NSMakeRange(0, header.length))
+        header.replaceOccurrences(of: "${AUTHOR}", with: info.authorName, options: NSString.CompareOptions(), range: NSMakeRange(0, header.length))
+        header.replaceOccurrences(of: "${OWNER}", with: info.ownerName, options: NSString.CompareOptions(), range: NSMakeRange(0, header.length))
+        header.replaceOccurrences(of: "${YEAR}", with: info.yearString, options: NSString.CompareOptions(), range: NSMakeRange(0, header.length))
         
         return header as String
     }
 
     // MARK:
     
-    func copyrightInformationForFile(fileUrl:NSURL, fileInfoOptions:FileInfoOptions) -> CopyrightInformation {
+    func copyrightInformationForFile(_ fileUrl:URL, fileInfoOptions:FileInfoOptions) -> CopyrightInformation {
         //get date
-        var date: NSDate
+        var date: Date
         if(self.findSCMCreationDate) {
-            date = NSFileManager.defaultManager().creationDateOfFileAtURL(fileUrl, options: fileInfoOptions)
+            date = FileManager.default.creationDateOfFileAtURL(fileUrl, options: fileInfoOptions)
         }
         else {
             date = self.fixedDate
@@ -420,7 +420,7 @@ class CopyrightGenerator {
         let dateString = self.dateStringForDate(date);
         
         //year
-        var year = NSCalendar.currentCalendar().component(NSCalendarUnit.Year, fromDate: date)
+        var year = (Calendar.current as NSCalendar).component(NSCalendar.Unit.year, from: date)
         if let customYear = self.extraCopyrightYear {
             year = customYear
         }
@@ -429,13 +429,13 @@ class CopyrightGenerator {
         //get Author
         var author: NSString
         if(self.findSCMAuthor) {
-            author = NSFileManager.defaultManager().authorOfFileAtURL(fileUrl, options: fileInfoOptions, matchToOSX:self.tryToMatchAuthor)
+            author = FileManager.default.authorOfFileAtURL(fileUrl, options: fileInfoOptions, matchToOSX:self.tryToMatchAuthor)
         }
         else {
             //this neednt be done here but it is ;)
-            author = self.fixedAuthor
-            if author == NSUserName() {
-                author = NSFullUserName()
+            author = self.fixedAuthor as NSString
+            if author as String == NSUserName() {
+                author = NSFullUserName() as NSString
             }
         }
         
@@ -443,9 +443,9 @@ class CopyrightGenerator {
         var owner = author
         if let customOwner = self.extraCopyrightOwner {
             //this neednt be done here but it is ;)
-            owner = customOwner
-            if owner == NSUserName() {
-                owner = NSFullUserName()
+            owner = customOwner as NSString
+            if owner as String == NSUserName() {
+                owner = NSFullUserName() as NSString
             }
         }
         

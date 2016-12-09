@@ -9,6 +9,6 @@
 import Cocoa
 
 struct FileContent {
-    var url: NSURL
+    var url: URL
     var content: String
 }
