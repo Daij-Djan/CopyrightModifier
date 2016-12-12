@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import ObjectiveGit
 
 class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewDelegate, PreviewWindowControllerDelegate {
     //InterfaceState
@@ -47,18 +48,21 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     }
 
     override func awakeFromNib() {
-        //init the UI with the default template
-        newTemplate.insertText(CopyrightGenerator.defaultCopyrightTemplate(), replacementRange: NSMakeRange(0, 0))
-
         //IB fails to set the font for some reason
         newTemplate.font = NSFont(name: "Menlo", size: 13)
         theLicenseText.font = NSFont(name: "Menlo", size: 13)
         
+        //set default values
         if let cell = self.fixedAuthor.cell as? NSTextFieldCell {
             cell.placeholderString = NSUserName()
+            cell.stringValue = NSUserName()
         }
         self.fixedDate.dateValue = Date()
         
+        //init the UI with the default template
+        //and trigger a fake click event
+        newTemplate.insertText(CopyrightGenerator.defaultCopyrightTemplate(), replacementRange: NSMakeRange(0, 0))
+
         //fake url change
         changeLicenseURL(self.theLicenseURL)
     }
@@ -112,6 +116,14 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         }
         
         shownState = interfaceState
+    }
+    
+    var gitRepoFound: Bool {
+        if self.path.stringValue.characters.count > 0 {
+            return GTRepository.findRepositoryWithURL(URL(fileURLWithPath: self.path.stringValue)) != nil
+        }
+        
+        return false
     }
     
     var processingEnabled: Bool {
@@ -238,12 +250,55 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         
         panel.begin { (result) -> Void in
             if result == NSFileHandlingPanelOKButton {
-                for url in panel.urls {
-                    if !url.isFileURL {
+                for fileURL in panel.urls {
+                    if !fileURL.isFileURL {
                         continue
                     }
                     
-                    self.path.stringValue = url.path
+                    if GTRepository.findRepositoryWithURL(fileURL) == nil {
+                        let alert = NSAlert()
+                        alert.messageText = "The chosen file/folder is not a git repository and some advanced functionality wont be available. If this file/folder is part of a git repository though, please select the repository root now.";
+                        alert.addButton(withTitle: "Select GIT Repo")
+                        alert.addButton(withTitle: "Proceed without")
+                        let answer = alert.runModal()
+                        if answer == NSAlertFirstButtonReturn {
+                            self.openGitURLForSender(sender, path:fileURL.path)
+                            return
+                        }
+                    }
+
+                    self.path.stringValue = fileURL.path
+                    self.anyClick(sender)
+                }
+            }
+        }
+    }
+    
+    func openGitURLForSender(_ sender: AnyObject, path: String) {
+        if self.path.isHidden {
+            return
+        }
+        
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = false
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        
+        panel.begin { (result) -> Void in
+            if result == NSFileHandlingPanelOKButton {
+                for fileURL in panel.urls {
+                    if !fileURL.isFileURL {
+                        continue
+                    }
+                    
+                    if GTRepository.findRepositoryWithURL(fileURL) == nil {
+                        let alert = NSAlert()
+                        alert.messageText = "The chosen folder is still not a valid git repository and some advanced functionality wont be available. To retry, browse for the file/folder again.";
+                        alert.runModal()
+                    }
+                    
+                    self.path.stringValue = fileURL.path
                     self.anyClick(sender)
                 }
             }
@@ -290,6 +345,8 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     }
     
     @IBAction func anyClick(_ sender: AnyObject) {
+        self.willChangeValue(forKey: "gitRepoFound")
+        self.didChangeValue(forKey: "gitRepoFound")
         self.willChangeValue(forKey: "processingEnabled")
         self.didChangeValue(forKey: "processingEnabled")
         self.willChangeValue(forKey: "pathIsFolder")
