@@ -17,7 +17,7 @@ extension GTRepository {
     class func findCachedRepositoryWithURL(_ fileUrl:URL) -> GTRepository? {
         
         //search on disk
-        var path = fileUrl.path
+        var path : String! = fileUrl.path
 
         var repo:GTRepository?
         
@@ -57,12 +57,9 @@ extension GTRepository {
 
     class func findRepositoryWithURL(_ fileUrl:URL) -> GTRepository? {
         //search on disk
-        var path = fileUrl.path
+        var path : String! = fileUrl.path
         var repo:GTRepository?
 
-        //search on disk
-        path = fileUrl.path
-        
         while(repo == nil && path != nil) {
             let url = URL(fileURLWithPath: path)
             do {

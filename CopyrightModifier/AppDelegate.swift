@@ -13,7 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     override func awakeFromNib() {
         windowController.window!.center()
         #if DEBUG
-            let env = NSProcessInfo.processInfo().environment
+            let env = ProcessInfo.processInfo.environment
             if let path = env["UI_TESTING_PATH"] {
                 if let main = windowController as? MainWindowController {
                     main.path.stringValue = path

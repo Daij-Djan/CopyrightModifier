@@ -31,7 +31,7 @@
 		B49FA2CE1A1FEC45006F035B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49FA2C61A1FEC45006F035B /* AppDelegate.swift */; };
 		B49FA2D21A1FEC45006F035B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B49FA2CB1A1FEC45006F035B /* MainMenu.xib */; };
 		B49FA2DB1A20D81A006F035B /* CopyrightGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49FA2DA1A20D81A006F035B /* CopyrightGenerator.swift */; };
-		B49FA2DF1A20FCCA006F035B /* NSFileManager+SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49FA2DD1A20FCCA006F035B /* NSFileManager+SCM.swift */; };
+		B49FA2DF1A20FCCA006F035B /* FileManager+SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49FA2DD1A20FCCA006F035B /* FileManager+SCM.swift */; };
 		B49FA2E01A20FCCA006F035B /* String+FileName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49FA2DE1A20FCCA006F035B /* String+FileName.swift */; };
 /* End PBXBuildFile section */
 
@@ -88,7 +88,7 @@
 		B49FA2C91A1FEC45006F035B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CopyrightModifier/Info.plist; sourceTree = "<group>"; };
 		B49FA2CB1A1FEC45006F035B /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenu.xib; path = CopyrightModifier/MainMenu.xib; sourceTree = "<group>"; };
 		B49FA2DA1A20D81A006F035B /* CopyrightGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CopyrightGenerator.swift; path = CopyrightModifier/CopyrightGenerator.swift; sourceTree = "<group>"; };
-		B49FA2DD1A20FCCA006F035B /* NSFileManager+SCM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFileManager+SCM.swift"; sourceTree = "<group>"; };
+		B49FA2DD1A20FCCA006F035B /* FileManager+SCM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+SCM.swift"; sourceTree = "<group>"; };
 		B49FA2DE1A20FCCA006F035B /* String+FileName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+FileName.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,7 +188,7 @@
 				B3B58FFE1C139AA2002D5116 /* GTRepository+FindRecursive.swift */,
 				B3B58FFF1C139AA2002D5116 /* GTRepository+FindFileHistory.swift */,
 				B3B590001C139AA2002D5116 /* GTTreeEntry+EntryWithSHA.swift */,
-				B49FA2DD1A20FCCA006F035B /* NSFileManager+SCM.swift */,
+				B49FA2DD1A20FCCA006F035B /* FileManager+SCM.swift */,
 				B39503761AB9C7A800544E52 /* NSView+Enable.swift */,
 				B49FA2DE1A20FCCA006F035B /* String+FileName.swift */,
 				B36204841AB63883005AE54B /* FileInfoOptions.swift */,
@@ -243,12 +243,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Dominik Pich";
 				TargetAttributes = {
 					B36175C519A4916600186F90 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = SAY557T8WK;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -324,7 +326,7 @@
 				B3B590011C139AA2002D5116 /* GTRepository+FindRecursive.swift in Sources */,
 				B359F7EA1ACE9CDE0059A353 /* NSUserDefaults+RunOnce.swift in Sources */,
 				B36204851AB63883005AE54B /* FileInfoOptions.swift in Sources */,
-				B49FA2DF1A20FCCA006F035B /* NSFileManager+SCM.swift in Sources */,
+				B49FA2DF1A20FCCA006F035B /* FileManager+SCM.swift in Sources */,
 				B36C95C01ABB1C3300E0CDB3 /* CopyrightInformation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,8 +363,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -371,6 +375,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -406,8 +411,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -416,6 +423,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -426,6 +434,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -434,7 +443,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CopyrightModifier/CopyrightModifier.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SAY557T8WK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -452,7 +463,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CopyrightModifier/CopyrightModifier.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SAY557T8WK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",

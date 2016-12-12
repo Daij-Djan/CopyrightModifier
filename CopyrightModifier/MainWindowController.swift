@@ -252,7 +252,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     
     @IBAction func processPath(_ sender: AnyObject) {
         //grab responder state
-        self.window?.makeFirstResponder(sender as! NSResponder)
+        self.window?.makeFirstResponder(sender as? NSResponder)
         
         let url = URL(fileURLWithPath: self.path.stringValue)
         
@@ -265,7 +265,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         
         //go
         myGenerator.processURL(url, progressHandler: { (url, options) in
-            self.progressLabel.stringValue = url.lastPathComponent!
+            self.progressLabel.stringValue = url.lastPathComponent
             
             self.progressLabelAuthor.stringValue = options != nil ? options!.authorName : ""
             self.progressLabelDate.stringValue = options != nil ? options!.creationDateString : ""
@@ -363,7 +363,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         if let contents = controller.checkedFileContents, didFinishSuccessfully {
             self.setInterfaceState(InterfaceState.progress, fileContents: contents)
             self.writer.write(contents, progressHandler: { (url) -> Void in
-                self.progressLabel.stringValue = url.lastPathComponent!
+                self.progressLabel.stringValue = url.lastPathComponent
                 }, completionHandler: { (ok, urls, error) -> Void in
                     self.setInterfaceState(InterfaceState.main, fileContents: nil)
             })

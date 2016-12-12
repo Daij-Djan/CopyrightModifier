@@ -129,7 +129,7 @@ class CopyrightGenerator {
     
     //MARK: -
     
-    fileprivate func processURL(_ url: URL, generatedOutputs: inout Array<(FileContent)>, progressHandler: (URL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
+    fileprivate func processURL(_ url: URL, generatedOutputs: inout Array<(FileContent)>, progressHandler: @escaping (URL, CopyrightInformation?) -> Void) -> (Bool, NSError?) {
         //check SCM  and proceed
         let scmFileInfoOptions = FileManager.default.SCMStateOfFileAtURL(url)
         let fileInfoOptions = scmFileInfoOptions.union(.LOCAL)
@@ -186,9 +186,7 @@ class CopyrightGenerator {
     }
 
     fileprivate func shouldVisitFolder(_ dirUrl:URL) -> Bool {
-        guard let name = dirUrl.lastPathComponent.lowercased() else {
-            return false //?
-        }
+        let name = dirUrl.lastPathComponent.lowercased()
         
         //read IsPackageKey from url and skip packages
         var isPackage: AnyObject?
@@ -429,7 +427,7 @@ class CopyrightGenerator {
         //get Author
         var author: NSString
         if(self.findSCMAuthor) {
-            author = FileManager.default.authorOfFileAtURL(fileUrl, options: fileInfoOptions, matchToOSX:self.tryToMatchAuthor)
+            author = FileManager.default.authorOfFileAtURL(fileUrl, options: fileInfoOptions, matchToOSX:self.tryToMatchAuthor) as NSString
         }
         else {
             //this neednt be done here but it is ;)
