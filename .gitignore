@@ -7,3 +7,5 @@
 # Pods/
 
 .DS_Store
+/CopyrightModifier.xcodeproj/xcuserdata
+/CopyrightModifier.xcodeproj/project.xcworkspace/xcuserdata
