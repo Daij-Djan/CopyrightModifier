@@ -11,4 +11,5 @@ import Cocoa
 struct FileContent {
     var url: URL
     var content: String
+    var modified: Bool
 }

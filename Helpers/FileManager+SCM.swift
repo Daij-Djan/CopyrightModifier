@@ -83,7 +83,7 @@ extension FileManager {
     
     // MARK: author
 
-    func authorOfFileAtURL(_ fileUrl:URL, options:FileInfoOptions, matchToOSX:Bool) -> String {
+    func authorOfFileAtURL(_ fileUrl:URL, options:FileInfoOptions, matchToOSX:Bool = true) -> String {
         var author:NSString = ""
         
         //get git author

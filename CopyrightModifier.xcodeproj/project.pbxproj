@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9877272C1E005F5100756088 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9877272B1E005F5100756088 /* ZipArchive.framework */; };
+		98AC60891E0D403B00DCE2DD /* ZipArchive.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9877272B1E005F5100756088 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B359F7EA1ACE9CDE0059A353 /* NSUserDefaults+RunOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B359F7E91ACE9CDE0059A353 /* NSUserDefaults+RunOnce.swift */; };
 		B36204851AB63883005AE54B /* FileInfoOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36204841AB63883005AE54B /* FileInfoOptions.swift */; };
 		B36C95C01ABB1C3300E0CDB3 /* CopyrightInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C95BF1ABB1C3300E0CDB3 /* CopyrightInformation.swift */; };
@@ -52,6 +54,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				98AC60891E0D403B00DCE2DD /* ZipArchive.framework in CopyFiles */,
 				B3E064901C0068AB00A77C2D /* ObjectiveGit.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,6 +62,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9877272B1E005F5100756088 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/Mac/ZipArchive.framework; sourceTree = "<group>"; };
 		B3031E2A1D2E4AB100951685 /* Tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Tests; sourceTree = "<group>"; };
 		B359F7E91ACE9CDE0059A353 /* NSUserDefaults+RunOnce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUserDefaults+RunOnce.swift"; sourceTree = "<group>"; };
 		B36175C619A4916600186F90 /* CopyrightModifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyrightModifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3E0648E1C0068A400A77C2D /* ObjectiveGit.framework in Frameworks */,
+				9877272C1E005F5100756088 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				B3E0648D1C0068A400A77C2D /* ObjectiveGit.framework */,
+				9877272B1E005F5100756088 /* ZipArchive.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

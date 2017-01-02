@@ -1,1 +1,2 @@
+github "ZipArchive/ZipArchive" "v1.6.2"
 github "libgit2/objective-git" "0.12.0"

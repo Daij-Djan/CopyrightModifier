@@ -32,7 +32,9 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         if(self.fixedAuthor.stringValue.characters.count > 0) {
             generator.fixedAuthor = self.fixedAuthor.stringValue
         }
-        generator.tryToMatchAuthor = (self.tryToMatchAuthor.state == NSOnState)
+        else {
+            generator.fixedAuthor = NSFullUserName()
+        }
         generator.fixedDate = self.fixedDate.dateValue
         generator.extraCopyrightOwner = (self.ownerOptions.selectedTag()==2) ? self.fixedOwner.stringValue : nil
         generator.extraCopyrightYear = (self.yearOptions.selectedTag()==2) ? self.fixedYear.integerValue : nil //FIX
@@ -40,6 +42,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         
         generator.removeOldHeaderIfNeeded =  (self.removeOld.state == NSOnState)
         generator.addNewHeader = true
+        generator.writeLicenseTextFile = (self.writeLicenseFile.state == NSOnState)
         
         generator.copyrightTemplate = self.newTemplate.string ?? "..."
         generator.licenseText = self.theLicenseText.string ?? "..."
@@ -54,8 +57,8 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         
         //set default values
         if let cell = self.fixedAuthor.cell as? NSTextFieldCell {
-            cell.placeholderString = NSUserName()
-            cell.stringValue = NSUserName()
+            cell.placeholderString = NSFullUserName()
+            cell.stringValue = NSFullUserName()
         }
         self.fixedDate.dateValue = Date()
         
@@ -206,10 +209,9 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     //change options
     @IBOutlet weak var authorOptions: NSMatrix!
     @IBOutlet weak var fixedAuthor: NSTextField!
-    @IBOutlet weak var tryToMatchAuthor: NSButton!
     @IBOutlet weak var dateOptions: NSMatrix!
     @IBOutlet weak var fixedDate: NSDatePicker!
-    
+
     @IBOutlet weak var ownerOptions: NSMatrix!
     @IBOutlet weak var fixedOwner: NSTextField!
     @IBOutlet weak var yearOptions: NSMatrix!
@@ -225,6 +227,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     
     //operations
     @IBOutlet var backupOld: NSButton!
+    @IBOutlet var writeLicenseFile: NSButton! //T
     @IBOutlet weak var removeOld: NSButton!
     
     //progress
@@ -418,11 +421,18 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     
     func previewWindowController(_ controller:PreviewWindowController, didFinishSuccessfully:Bool) {
         if let contents = controller.checkedFileContents, didFinishSuccessfully {
+            var backupFolder : URL? = nil
+            if (pathIsFolder && backupOld.state == NSOnState && !gitRepoFound) {
+                backupFolder = URL(fileURLWithPath: path.stringValue)
+            }
+            
             self.setInterfaceState(InterfaceState.progress, fileContents: contents)
-            self.writer.write(contents, progressHandler: { (url) -> Void in
-                self.progressLabel.stringValue = url.lastPathComponent
-                }, completionHandler: { (ok, urls, error) -> Void in
-                    self.setInterfaceState(InterfaceState.main, fileContents: nil)
+            self.writer.write(contents,
+                              shouldDoBackupToFolder: backupFolder,
+                              progressHandler: { (url) -> Void in
+                                self.progressLabel.stringValue = url.lastPathComponent
+            }, completionHandler: { (ok, urls, error) -> Void in
+                self.setInterfaceState(InterfaceState.main, fileContents: nil)
             })
         }
         else {

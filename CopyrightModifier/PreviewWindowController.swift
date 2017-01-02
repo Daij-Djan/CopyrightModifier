@@ -17,8 +17,8 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
         didSet {
             var newFlags = [Bool]()
             if(fileContents != nil) {
-                for _ in 1...fileContents!.count {
-                    newFlags.append(true)
+                for fileContent in fileContents! {
+                    newFlags.append(fileContent.modified)
                 }
             }
             includeFlags = newFlags
@@ -61,6 +61,7 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
     //MARK: IB
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet var textView: NSTextView!
+    @IBOutlet var label: NSTextField!
     
     @IBAction func proceed(_ sender: AnyObject) {
         self.delegate.previewWindowController(self, didFinishSuccessfully: true)
@@ -92,11 +93,47 @@ class PreviewWindowController: NSWindowController, NSTableViewDataSource, NSTabl
         if tableColumn?.identifier == "included" {
             let bool = object! as! NSNumber
             includeFlags[row] = bool.boolValue
+            
+            updateLabelFor(selectedRow: row)
         }
     }
     func tableViewSelectionDidChange(_ notification: Notification) {
         let selectedRow = self.tableView.selectedRow
+        
         self.textView.string = fileContents == nil || selectedRow < 0 ? "" : fileContents![selectedRow
             ].content
+        updateLabelFor(selectedRow: selectedRow)
+    }
+    
+    func updateLabelFor(selectedRow : Int) {
+        guard(fileContents != nil && selectedRow >= 0) else {
+            self.label.stringValue = "no file selected"
+            self.label.backgroundColor = NSColor.gray
+            return
+        }
+        
+        var str1 = ""
+        var str2 = ""
+        
+        let modified = fileContents![selectedRow].modified
+        if modified {
+            str1 = "file content was modified"
+            
+        }
+        else {
+            str1 = "edited file content is identical"
+        }
+        
+        let willBeWritten = includeFlags[selectedRow]
+        if willBeWritten {
+            str2 = "file will be written to disk"
+            
+        }
+        else {
+            str2 = "file will NOT be written to disk"
+        }
+        
+        self.label.stringValue = "\(str1)\n\(str2)"
+        self.label.backgroundColor = willBeWritten ? NSColor.green : NSColor.red
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -46,13 +46,14 @@
                 <outlet property="removeOld" destination="IOQ-v7-mga" id="QVq-qp-uTV"/>
                 <outlet property="theLicenseText" destination="ed9-V7-QRq" id="z3m-6c-jde"/>
                 <outlet property="theLicenseURL" destination="deK-h4-dFg" id="ahM-zc-Dm8"/>
-                <outlet property="tryToMatchAuthor" destination="1wf-aX-5An" id="QjE-xR-U8a"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
+                <outlet property="writeLicenseFile" destination="soO-SL-nWK" id="OgH-UP-J74"/>
                 <outlet property="yearOptions" destination="TRu-PB-nJq" id="TSS-m3-8Ep"/>
             </connections>
         </customObject>
         <customObject id="Box-eY-YXj" customClass="PreviewWindowController" customModule="CopyrightModifier">
             <connections>
+                <outlet property="label" destination="I3m-f2-hez" id="eCS-7O-dl5"/>
                 <outlet property="tableView" destination="o4d-7X-VDB" id="JiI-bV-YHM"/>
                 <outlet property="textView" destination="lak-Pm-lE6" id="dJ6-QH-6LO"/>
                 <outlet property="window" destination="J67-08-pY0" id="E8v-cg-3lO"/>
@@ -606,7 +607,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a fixed author                                                          " imagePosition="left" alignment="left" enabled="NO" tag="2" inset="2" id="7As-bg-X6E">
+                                            <buttonCell type="radio" title="Use a fixed author                                                          " imagePosition="left" alignment="left" enabled="NO" state="on" tag="2" inset="2" id="7As-bg-X6E">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -654,7 +655,7 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a fixed creation date                                              " imagePosition="left" alignment="left" enabled="NO" tag="2" inset="2" id="aIJ-YC-rrW">
+                                            <buttonCell type="radio" title="Use a fixed creation date                                              " imagePosition="left" alignment="left" enabled="NO" state="on" tag="2" inset="2" id="aIJ-YC-rrW">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -690,17 +691,6 @@
                                         <action selector="anyClick:" target="Voe-Tx-rLC" id="13p-NC-psh"/>
                                     </connections>
                                 </datePicker>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1wf-aX-5An">
-                                    <rect key="frame" x="20" y="12" width="371" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="try to match short OSX username to long OSX username" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="pju-Cg-APJ">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="anyClick:" target="Voe-Tx-rLC" id="TcN-0L-bDV"/>
-                                    </connections>
-                                </button>
                             </subviews>
                         </view>
                     </box>
@@ -793,15 +783,24 @@
                                     </connections>
                                 </button>
                                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P6O-7x-Qyp">
-                                    <rect key="frame" x="746" y="40" width="341" height="34"/>
+                                    <rect key="frame" x="729" y="16" width="341" height="34"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ExJ-Uw-bYI">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <string key="title">Backup input to a subfolder 
-(the original files are copied to '.CRMBackup')</string>
+                                        <string key="title">Backup input to a zip file if NO git was specified
+(the original files are saved in  '_CRMBackup.zip')</string>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
+                                        <binding destination="Voe-Tx-rLC" name="enabled2" keyPath="gitRepoFound" previousBinding="Y70-FI-eN2" id="mB7-7J-BWz">
+                                            <dictionary key="options">
+                                                <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                                <integer key="NSNullPlaceholder" value="-1"/>
+                                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                            </dictionary>
+                                        </binding>
                                         <binding destination="Voe-Tx-rLC" name="enabled" keyPath="pathIsFolder" id="Y70-FI-eN2"/>
                                     </connections>
                                 </button>
@@ -852,6 +851,19 @@
                                         <outlet property="delegate" destination="Voe-Tx-rLC" id="1sO-7X-Wus"/>
                                     </connections>
                                 </textField>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="soO-SL-nWK">
+                                    <rect key="frame" x="729" y="59" width="364" height="34"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="lUk-Fd-nCh">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <string key="title">Create an additional license file 
+(use above template and values from first matching file)</string>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="Voe-Tx-rLC" name="enabled" keyPath="pathIsFolder" id="wQo-jj-czL"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </view>
                     </box>
@@ -901,7 +913,7 @@ DQ
                 <outlet property="delegate" destination="Voe-Tx-rLC" id="33m-sX-dB2"/>
                 <outlet property="initialFirstResponder" destination="oEF-TK-20j" id="4YB-F2-m6n"/>
             </connections>
-            <point key="canvasLocation" x="-253.5" y="-358.5"/>
+            <point key="canvasLocation" x="-149" y="-355"/>
         </window>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="ina-gv-w76" userLabel="progress sheet">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
@@ -995,7 +1007,7 @@ Gw
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" ambiguous="YES" id="lr5-N6-E42">
                             <rect key="frame" x="1" y="1" width="578" height="624"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="22" id="o4d-7X-VDB">
                                     <rect key="frame" x="0.0" y="0.0" width="578" height="624"/>
@@ -1046,17 +1058,17 @@ Gw
                         </scroller>
                     </scrollView>
                     <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iB9-ju-IDH">
-                        <rect key="frame" x="608" y="54" width="472" height="626"/>
+                        <rect key="frame" x="608" y="54" width="472" height="584"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" ambiguous="YES" id="hur-0W-Z99">
-                            <rect key="frame" x="1" y="1" width="470" height="624"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <rect key="frame" x="1" y="1" width="470" height="582"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView ambiguous="YES" editable="NO" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="lak-Pm-lE6">
-                                    <rect key="frame" x="0.0" y="0.0" width="470" height="624"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="472" height="582"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="470" height="624"/>
+                                    <size key="minSize" width="470" height="582"/>
                                     <size key="maxSize" width="589" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <connections>
@@ -1071,7 +1083,7 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="1Z8-Ld-dQU">
-                            <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                            <rect key="frame" x="455" y="1" width="16" height="582"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -1105,9 +1117,20 @@ Gw
                             <binding destination="Voe-Tx-rLC" name="enabled" keyPath="processingEnabled" id="Kez-2x-LQB"/>
                         </connections>
                     </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I3m-f2-hez">
+                        <rect key="frame" x="608" y="646" width="472" height="34"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" drawsBackground="YES" id="gvf-QL-QH8">
+                            <font key="font" metaFont="system"/>
+                            <string key="title">file remains unmodified / was modified
+it will (NOT) be written to disk</string>
+                            <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="79" y="878"/>
+            <point key="canvasLocation" x="70" y="878"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="a0l-Ph-28u"/>
     </objects>

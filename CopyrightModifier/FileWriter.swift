@@ -7,11 +7,11 @@
 //
 
 import Cocoa
+import ZipArchive
+
+fileprivate let backupZipName = "_CRMBackup.zip"
 
 class FileWriter {
-    //MARK: constants
-    class func backupFolderBaseName() -> String { return "__CRMBackup" }
-    
     //operations
     var shouldDoBackup = false
     
@@ -24,19 +24,38 @@ class FileWriter {
     
     //MARK: processing
     
-    func write(_ fileContents: Array<FileContent>, progressHandler: @escaping (URL) -> Void, completionHandler: @escaping (Bool, Array<(URL)>, NSError?) -> Void) {
+    func write(_ fileContents: Array<FileContent>, shouldDoBackupToFolder: URL?, progressHandler: @escaping (URL) -> Void, completionHandler: @escaping (Bool, Array<(URL)>, NSError?) -> Void) {
         self.writerQueue.async {
             var writtenFiles = Array<(URL)>()
             
-            let result = self.write(fileContents, writtenFiles:&writtenFiles, progressHandler: progressHandler)
-        
-            //report success | callback on main thread
-            let br = result.0
-            var error = result.1
+            //zip all existing
+            var ok = true
+            if let folder = shouldDoBackupToFolder {
+                let path = folder.appendingPathComponent(backupZipName).path
+                let maybeContentPaths = fileContents.map({ (fileContent) -> String in
+                    fileContent.url.path
+                })
+                let contentPaths = maybeContentPaths.filter({ (path) -> Bool in
+                    return FileManager.default.fileExists(atPath: path)
+                })
+                ok = SSZipArchive.createZipFile(atPath: path, withFilesAtPaths: contentPaths as [Any])
+            }
+            
+            //write it out
+            var br = ok
+            var error:NSError?
+            if(ok) {
+                let result = self.write(fileContents, writtenFiles:&writtenFiles, progressHandler: progressHandler)
+                br = result.0
+                error = result.1
+            }
+
+            //fix error if needed
             if(error == nil) {
                 error = NSError(domain: "CopyRightWriter", code: 0, userInfo: [NSLocalizedDescriptionKey:"unkown error"])
             }
             
+            //report success | callback on main thread
             DispatchQueue.main.async {
                 completionHandler(br, writtenFiles, self.cancelWriting ? nil : error)
             }
@@ -60,6 +79,7 @@ class FileWriter {
                 return (false, nil)
             }
 
+            //notify UI
             DispatchQueue.main.async(execute: { () -> Void in
                 progressHandler(content.url as URL)
             })

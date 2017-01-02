@@ -35,7 +35,7 @@ class CopyrightGenerator {
     
     //change options
     var findSCMAuthor = true
-    var fixedAuthor = NSUserName()
+    var fixedAuthor = NSFullUserName()
     var tryToMatchAuthor = true
     var findSCMCreationDate = true
     var fixedDate = Date()
@@ -65,6 +65,7 @@ class CopyrightGenerator {
     var removeOldHeaderIfNeeded = true
     var addNewHeader = true
     var maxiumNumberOfFiles = 0
+    var writeLicenseTextFile = false
     
     //MARK: private helpers
     fileprivate var cancelWriting = false
@@ -164,7 +165,20 @@ class CopyrightGenerator {
             if res.0 == false {
                 return res
             }
+
+            //check if we gotta create a license file
+            if(self.writeLicenseTextFile && generatedOutputs.count > 0) {
+                let licenseUrl = url.appendingPathComponent("license.txt")
+                
+                let res = self.writeLicenseFile(licenseUrl,
+                                                fileInfoOptions: fileInfoOptions,
+                                                generatedOutputs: &generatedOutputs)
+                if res.0 == false {
+                    return res
+                }
+            }
         }
+        
         
         return (true, nil)
     }
@@ -208,8 +222,7 @@ class CopyrightGenerator {
             return false
         }
         
-        //skip svendor
-        //        print("go into \(dirUrl)")
+        //skip vendors
         if let foldersToSkip = self.foldersToSkip {
             for folderToSkip in foldersToSkip {
                 if( name.caseInsensitiveCompare(folderToSkip) == .orderedSame ) {
@@ -330,12 +343,14 @@ class CopyrightGenerator {
             return (false, NSError(domain: "CopyRightWriter", code: 20, userInfo: [NSLocalizedDescriptionKey:"error reading file content for \(fileUrl): \(anyError)"]))
         }
         
+        //edit it if needed
+        var modified = false
         autoreleasepool {
-            self.adaptContent(content, fileUrl: fileUrl, fileInfo: info)
+            modified = self.adaptContentIfNeeded(content, fileUrl: fileUrl, fileInfo: info)
         }
         
         //write it
-        let val = FileContent(url:fileUrl,content:content as String)
+        let val = FileContent(url:fileUrl,content:content as String, modified: modified)
         generatedOutputs.append(val)
         
         print("...done")
@@ -346,8 +361,40 @@ class CopyrightGenerator {
         return (true, nil)
     }
     
-    func adaptContent(_ content:NSMutableString, fileUrl:URL, fileInfo:CopyrightInformation) {
+    
+    func writeLicenseFile(_ licenseUrl:URL, fileInfoOptions:FileInfoOptions, generatedOutputs: inout Array<(FileContent)>) -> (Bool, NSError?) {
+        //read file content
+        var content:NSMutableString
+        do {
+            content = try NSMutableString(contentsOf: licenseUrl, encoding: String.Encoding.utf8.rawValue)
+        }
+        catch _ {
+            content = ""
+        }
+        
+        
+        //new content
+        let file = generatedOutputs.first!
+        let fileInfo = self.copyrightInformationForFile(file.url, fileInfoOptions: fileInfoOptions)
+        let licenseContent = self.generateCopyrightHeader(file.url.lastPathComponent, info: fileInfo)
+        
+        let modified = content as String != licenseContent
+        let licenseFile = FileContent(url: licenseUrl, content: licenseContent, modified: modified)
+        generatedOutputs.append(licenseFile)
+
+        return (true, nil)
+    }
+
+    //
+    
+    func adaptContentIfNeeded(_ content:NSMutableString, fileUrl:URL, fileInfo:CopyrightInformation) -> Bool {
         var oldHeader = ""
+        let newHeader = self.generateCopyrightHeader(fileUrl.lastPathComponent, info: fileInfo)
+        
+        //modification needed check
+        if content.hasPrefix(newHeader) {
+            return false
+        }
         
         //RM OLD HEADER
         if(self.removeOldHeaderIfNeeded) {
@@ -385,9 +432,10 @@ class CopyrightGenerator {
         //ADD NEW HEADER
         if self.addNewHeader {
             //prepend new header
-            let header = self.generateCopyrightHeader(fileUrl.lastPathComponent, info: fileInfo)
-            content.insert(header, at: 0)
+            content.insert(newHeader, at: 0)
         }
+        
+        return self.removeOldHeaderIfNeeded || self.addNewHeader
     }
 
     func generateCopyrightHeader(_ fileName:String, info:CopyrightInformation) -> String {

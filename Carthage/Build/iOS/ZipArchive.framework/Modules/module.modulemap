@@ -1,0 +1,10 @@
+framework module ZipArchive {
+  umbrella header "ZipArchive.h"
+
+  export *
+  module * { export * }
+}
+
+module ZipArchive.Swift {
+    header "ZipArchive-Swift.h"
+}
