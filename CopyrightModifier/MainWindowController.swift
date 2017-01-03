@@ -199,6 +199,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     
     //folder or file
     @IBOutlet weak var path: NSTextField!
+    @IBOutlet weak var gitPath: NSTextField!
     
     //search options
     @IBOutlet weak var recursive: NSButton!
@@ -246,6 +247,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         }
         
         let panel = NSOpenPanel()
+        panel.title = "Choose source folder / file to process"
         panel.canChooseDirectories = true
         panel.canCreateDirectories = false
         panel.canChooseFiles = true
@@ -259,6 +261,9 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                     }
                     
                     if GTRepository.findRepositoryWithURL(fileURL) == nil {
+                        self.gitPath.stringValue = "No git repository path found."
+                        self.gitPath.backgroundColor = NSColor.red
+
                         let alert = NSAlert()
                         alert.messageText = "The chosen file/folder is not a git repository and some advanced functionality wont be available. If this file/folder is part of a git repository though, please select the repository root now.";
                         alert.addButton(withTitle: "Select GIT Repo")
@@ -266,8 +271,12 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                         let answer = alert.runModal()
                         if answer == NSAlertFirstButtonReturn {
                             self.openGitURLForSender(sender, path:fileURL.path)
-                            return
+//                            return
                         }
+                    }
+                    else {
+                        self.gitPath.stringValue = "git repository @ \(fileURL.path)"
+                        self.gitPath.backgroundColor = NSColor.green
                     }
 
                     self.path.stringValue = fileURL.path
@@ -283,6 +292,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         }
         
         let panel = NSOpenPanel()
+        panel.title = "Choose corresponding git repository root"
         panel.canChooseDirectories = true
         panel.canCreateDirectories = false
         panel.canChooseFiles = false
@@ -301,7 +311,8 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                         alert.runModal()
                     }
                     
-                    self.path.stringValue = fileURL.path
+                    self.gitPath.stringValue = "git repository @ \(fileURL.path)"
+                    self.gitPath.backgroundColor = NSColor.green
                     self.anyClick(sender)
                 }
             }
