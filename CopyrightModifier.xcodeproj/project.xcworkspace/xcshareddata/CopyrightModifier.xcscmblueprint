@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04" : 9223372036854775807,
+    "1510FF3A5601E035E47D33706645B10508EC3DB8" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9F16901C-B36F-4572-80F2-05829785679E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04" : "CoprightModifier\/",
+    "1510FF3A5601E035E47D33706645B10508EC3DB8" : "DDUtils\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CopyrightModifier",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CopyrightModifier.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Daij-Djan\/DDUtils.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1510FF3A5601E035E47D33706645B10508EC3DB8"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Daij-Djan\/CopyrightModifier.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2047E2EDDEDEC0F33DD5EFEE76F06B28FF502F04"
+    }
+  ]
+}

@@ -16,8 +16,10 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         case progress
         case preview
     }
+
+    //MARK: properties
+
     fileprivate var shownState = InterfaceState.main
-    
     fileprivate let writer = FileWriter()
     fileprivate let generator = CopyrightGenerator()
     fileprivate var preparedGenerator: CopyrightGenerator {
@@ -50,6 +52,66 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         return generator
     }
 
+    var folderURL: URL? {
+        willSet {
+            folderURL?.stopAccessingSecurityScopedResource()
+        }
+        didSet {
+            folderURL?.startAccessingSecurityScopedResource()
+        }
+    }
+    var gitURL : URL? {
+        willSet {
+            gitURL?.stopAccessingSecurityScopedResource()
+        }
+        didSet {
+            gitURL?.startAccessingSecurityScopedResource()
+            
+            if let url = gitURL {
+                gitPath.stringValue = "git repository @ \(url.path)"
+                gitPath.backgroundColor = NSColor.green
+            }
+            else {
+                gitPath.stringValue = "No git repository path found."
+                gitPath.backgroundColor = NSColor.red
+            }
+        }
+    }
+    var touchedOptions = false
+    var loadedLicenseURL : URL?
+    var operationInProgress = false
+    
+    var gitRepoFound: Bool {
+        if self.path.stringValue.characters.count > 0 {
+            return GTRepository.findRepositoryWithURL(URL(fileURLWithPath: self.path.stringValue)) != nil
+        }
+        
+        return false
+    }
+    
+    var processingEnabled: Bool {
+        if self.path.stringValue.characters.count > 0 {
+            if FileManager.default.fileExists(atPath: self.path.stringValue) {
+                return !operationInProgress
+            }
+        }
+        
+        return false
+    }
+    
+    var pathIsFolder: Bool {
+        if self.path.stringValue.characters.count > 0 {
+            var isDir : ObjCBool = false
+            if FileManager.default.fileExists(atPath: self.path.stringValue, isDirectory: &isDir) {
+                return isDir.boolValue
+            }
+        }
+        
+        return false
+    }
+    
+    //MARK: methods
+    
     override func awakeFromNib() {
         //IB fails to set the font for some reason
         newTemplate.font = NSFont(name: "Menlo", size: 13)
@@ -120,33 +182,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         
         shownState = interfaceState
     }
-    
-    var gitRepoFound: Bool {
-        if self.path.stringValue.characters.count > 0 {
-            return GTRepository.findRepositoryWithURL(URL(fileURLWithPath: self.path.stringValue)) != nil
-        }
-        
-        return false
-    }
-    
-    var processingEnabled: Bool {
-        if self.path.stringValue.characters.count > 0 {
-            return FileManager.default.fileExists(atPath: self.path.stringValue)
-        }
-        
-        return false
-    }
-    
-    var pathIsFolder: Bool {
-        if self.path.stringValue.characters.count > 0 {
-            var isDir : ObjCBool = false
-            if FileManager.default.fileExists(atPath: self.path.stringValue, isDirectory: &isDir) {
-                return isDir.boolValue
-            }
-        }
-        
-        return false
-    }
+
     
     override func controlTextDidChange(_ obj: Notification) {
         let textField = obj.object as! NSTextField?
@@ -163,6 +199,8 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     }
     
     func loadLicenseURL() {
+        operationInProgress = true
+        
         self.theLicenseText.string = ""
         self.loadedLicenseURL = nil
         self.anyClick(self.theLicenseURL)
@@ -179,23 +217,112 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                         if let d = data, httpResponse.statusCode == 200 {
                             let str = NSString(data: d, encoding: String.Encoding.utf8.rawValue)
                             DispatchQueue.main.async {
+                                self.operationInProgress = false
                                 if self.theLicenseURL.stringValue == urlString {
                                     self.theLicenseText.string = str as? String
                                     self.loadedLicenseURL = url
-                                    self.anyClick(self.theLicenseURL)
                                 }
+                                self.anyClick(self.theLicenseURL)
                             }
+                            return
                         }
+                    }
+                    DispatchQueue.main.async {
+                        self.operationInProgress = false
+                        self.anyClick(self.theLicenseURL)
                     }
                 })
             }
         }
         else {
             self.theLicenseText.string = CopyrightGenerator.defaultLicenseText()
+            self.operationInProgress = false
+            self.anyClick(self.theLicenseURL)
         }
     }
     
-    // MARK: IB
+    func updateUI() {
+        self.willChangeValue(forKey: "gitRepoFound")
+        self.didChangeValue(forKey: "gitRepoFound")
+        self.willChangeValue(forKey: "operationInProgress")
+        self.didChangeValue(forKey: "operationInProgress")
+        self.willChangeValue(forKey: "processingEnabled")
+        self.didChangeValue(forKey: "processingEnabled")
+        self.willChangeValue(forKey: "pathIsFolder")
+        self.didChangeValue(forKey: "pathIsFolder")
+        
+        if !gitRepoFound {
+            authorOptions.selectCell(withTag: 2)
+            dateOptions.selectCell(withTag: 2)
+        }
+        else {
+            if !touchedOptions {
+                authorOptions.selectCell(withTag: 1)
+                dateOptions.selectCell(withTag: 1)
+            }
+        }
+    }
+    
+    func openGitURL(_ sender: AnyObject, path: String) {
+        if self.path.isHidden {
+            return
+        }
+        
+        let panel = NSOpenPanel()
+        panel.title = "Choose corresponding git repository root"
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = false
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        
+        panel.begin { (result) -> Void in
+            if result == NSFileHandlingPanelOKButton {
+                for fileURL in panel.urls {
+                    if !fileURL.isFileURL {
+                        continue
+                    }
+                    
+                    self.gitURL = nil
+                    
+                    if GTRepository.findRepositoryWithURL(fileURL) == nil {
+                        let alert = NSAlert()
+                        alert.messageText = "The chosen folder is still not a valid git repository and some advanced functionality wont be available. To retry, browse for the file/folder again.";
+                        alert.runModal()
+                    }
+                    else {
+                        self.gitURL = fileURL
+                    }
+                    
+                    self.anyClick(sender)
+                }
+            }
+        }
+    }
+
+    func previewWindowController(_ controller:PreviewWindowController, didFinishSuccessfully:Bool) {
+        if let contents = controller.checkedFileContents, didFinishSuccessfully {
+            var backupFolder : URL? = nil
+            if (pathIsFolder && backupOld.state == NSOnState && !gitRepoFound) {
+                backupFolder = URL(fileURLWithPath: path.stringValue)
+            }
+            
+            self.setInterfaceState(InterfaceState.progress, fileContents: contents)
+            self.writer.write(contents,
+                              shouldDoBackupToFolder: backupFolder,
+                              progressHandler: { (url) -> Void in
+                                self.progressLabel.stringValue = url.lastPathComponent
+            }, completionHandler: { (ok, urls, error) -> Void in
+                self.operationInProgress = false
+                self.setInterfaceState(InterfaceState.main, fileContents: nil)
+            })
+        }
+        else {
+            self.operationInProgress = false
+            self.setInterfaceState(InterfaceState.main, fileContents: nil)
+        }
+    }
+
+    // MARK: IBOutlets
     
     //folder or file
     @IBOutlet weak var path: NSTextField!
@@ -212,7 +339,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     @IBOutlet weak var fixedAuthor: NSTextField!
     @IBOutlet weak var dateOptions: NSMatrix!
     @IBOutlet weak var fixedDate: NSDatePicker!
-
+    
     @IBOutlet weak var ownerOptions: NSMatrix!
     @IBOutlet weak var fixedOwner: NSTextField!
     @IBOutlet weak var yearOptions: NSMatrix!
@@ -220,7 +347,6 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     @IBOutlet weak var copyrightYearTillNow: NSButton!
     @IBOutlet weak var licenseOptions: NSMatrix!
     @IBOutlet var theLicenseURL: NSTextField!
-    fileprivate var loadedLicenseURL : URL?
     
     //the template to change
     @IBOutlet var theLicenseText: NSTextView!
@@ -237,9 +363,11 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     @IBOutlet weak var progressLabel: NSTextField!
     @IBOutlet weak var progressLabelAuthor: NSTextField!
     @IBOutlet weak var progressLabelDate: NSTextField!
-    
+ 
     //preview panel
     @IBOutlet var previewWindowController: PreviewWindowController!
+    
+    //MARK: IBActions
     
     @IBAction func openPath(_ sender: AnyObject) {
         if self.path.isHidden {
@@ -260,9 +388,9 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                         continue
                     }
                     
+                    self.gitURL = nil
+
                     if GTRepository.findRepositoryWithURL(fileURL) == nil {
-                        self.gitPath.stringValue = "No git repository path found."
-                        self.gitPath.backgroundColor = NSColor.red
 
                         let alert = NSAlert()
                         alert.messageText = "The chosen file/folder is not a git repository and some advanced functionality wont be available. If this file/folder is part of a git repository though, please select the repository root now.";
@@ -270,49 +398,16 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                         alert.addButton(withTitle: "Proceed without")
                         let answer = alert.runModal()
                         if answer == NSAlertFirstButtonReturn {
-                            self.openGitURLForSender(sender, path:fileURL.path)
+                            self.openGitURL(sender, path:fileURL.path)
 //                            return
                         }
                     }
                     else {
-                        self.gitPath.stringValue = "git repository @ \(fileURL.path)"
-                        self.gitPath.backgroundColor = NSColor.green
+                        self.gitURL = fileURL
                     }
 
+                    self.folderURL = fileURL
                     self.path.stringValue = fileURL.path
-                    self.anyClick(sender)
-                }
-            }
-        }
-    }
-    
-    func openGitURLForSender(_ sender: AnyObject, path: String) {
-        if self.path.isHidden {
-            return
-        }
-        
-        let panel = NSOpenPanel()
-        panel.title = "Choose corresponding git repository root"
-        panel.canChooseDirectories = true
-        panel.canCreateDirectories = false
-        panel.canChooseFiles = false
-        panel.allowsMultipleSelection = false
-        
-        panel.begin { (result) -> Void in
-            if result == NSFileHandlingPanelOKButton {
-                for fileURL in panel.urls {
-                    if !fileURL.isFileURL {
-                        continue
-                    }
-                    
-                    if GTRepository.findRepositoryWithURL(fileURL) == nil {
-                        let alert = NSAlert()
-                        alert.messageText = "The chosen folder is still not a valid git repository and some advanced functionality wont be available. To retry, browse for the file/folder again.";
-                        alert.runModal()
-                    }
-                    
-                    self.gitPath.stringValue = "git repository @ \(fileURL.path)"
-                    self.gitPath.backgroundColor = NSColor.green
                     self.anyClick(sender)
                 }
             }
@@ -326,6 +421,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
         let url = URL(fileURLWithPath: self.path.stringValue)
         
         //disable UI
+        self.operationInProgress = true
         self.setInterfaceState(InterfaceState.progress, fileContents: nil)
         
         //output
@@ -350,6 +446,7 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
                 if e != nil {
                     let alert = NSAlert(error: e!)
                     alert.runModal()
+                    self.operationInProgress = false
                     self.setInterfaceState(InterfaceState.main, fileContents: nil)
                 }
                 else {
@@ -359,61 +456,61 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     }
     
     @IBAction func anyClick(_ sender: AnyObject) {
-        self.willChangeValue(forKey: "gitRepoFound")
-        self.didChangeValue(forKey: "gitRepoFound")
-        self.willChangeValue(forKey: "processingEnabled")
-        self.didChangeValue(forKey: "processingEnabled")
-        self.willChangeValue(forKey: "pathIsFolder")
-        self.didChangeValue(forKey: "pathIsFolder")
+        updateUI()
+
+        if let sender = sender as? NSMatrix {
+            if sender == authorOptions || sender == dateOptions {
+                touchedOptions = true
+            }
+        }
     }
 
     @IBAction func changeLicenseURL(_ sender: AnyObject) {
         var URLString = ""
          
-        let row = self.licenseOptions.selectedRow
-        let column = self.licenseOptions.selectedColumn
+        let tag = self.licenseOptions.selectedTag()
 
-        if(column == 0) {
+        if(tag % 2 != 0) {
             //apache
-            if(row == 0) {
+            if(tag == 1) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/apache2.txt"
             }
             //gpl
-            else if(row == 1) {
+            else if(tag == 3) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/gpl_v3.txt"
             }
             //mit
-            else if(row == 2) {
+            else if(tag == 5) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/mit.txt"
             }
             //mozilla
-            else if(row == 3) {
+            else if(tag == 7) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/mozilla_v2.txt"
             }
             //eclipse
-            else if(row == 4) {
+            else if(tag == 9) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/epl.txt"
             }
         }
-        else if(column == 1) {
+        else {
             //bsd3
-            if(row == 0) {
+            if(tag == 2) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/bsd3.txt"
             }
             //bsd2
-            else if(row == 1) {
+            else if(tag == 4) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/bsd2.txt"
             }
            //lgpl
-            else if(row == 2) {
+            else if(tag == 6) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/lgpl_v3.txt"
             }
             //CD
-            else if(row == 3) {
+            else if(tag == 8) {
                 URLString = "https://www.pich.info/apps/copyrightmodifier/licenses/cddl.txt"
             } 
             //Custom...
-            else if(row == 4) {
+            else if(tag == 10) {
                 //none ;)
             }
         }
@@ -425,29 +522,6 @@ class MainWindowController: NSWindowController, NSTextFieldDelegate, NSTextViewD
     
     @IBAction func cancelProcessing(_ sender: AnyObject) {
         self.preparedGenerator.cancelAllProcessing { () -> Void in
-        }
-    }
- 
-    //-
-    
-    func previewWindowController(_ controller:PreviewWindowController, didFinishSuccessfully:Bool) {
-        if let contents = controller.checkedFileContents, didFinishSuccessfully {
-            var backupFolder : URL? = nil
-            if (pathIsFolder && backupOld.state == NSOnState && !gitRepoFound) {
-                backupFolder = URL(fileURLWithPath: path.stringValue)
-            }
-            
-            self.setInterfaceState(InterfaceState.progress, fileContents: contents)
-            self.writer.write(contents,
-                              shouldDoBackupToFolder: backupFolder,
-                              progressHandler: { (url) -> Void in
-                                self.progressLabel.stringValue = url.lastPathComponent
-            }, completionHandler: { (ok, urls, error) -> Void in
-                self.setInterfaceState(InterfaceState.main, fileContents: nil)
-            })
-        }
-        else {
-            self.setInterfaceState(InterfaceState.main, fileContents: nil)
         }
     }
 }

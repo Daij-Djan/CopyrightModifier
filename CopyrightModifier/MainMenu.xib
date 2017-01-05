@@ -111,17 +111,32 @@
                             <menuItem title="Choose Source Folder / Files…" keyEquivalent="o" id="IAo-SY-fd9">
                                 <connections>
                                     <action selector="openPath:" target="Voe-Tx-rLC" id="BJ9-4q-sZL"/>
+                                    <binding destination="Voe-Tx-rLC" name="enabled" keyPath="operationInProgress" id="azR-KH-EbZ">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="SWE-it-mbU"/>
                             <menuItem title="Load Configuration" keyEquivalent="O" id="OgM-ni-4Eh">
                                 <connections>
                                     <action selector="load:" target="Nvn-UM-2O8" id="mLD-Fj-sh2"/>
+                                    <binding destination="Voe-Tx-rLC" name="enabled" keyPath="operationInProgress" id="lbV-RQ-sva">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </menuItem>
                             <menuItem title="Save Configuration" keyEquivalent="S" id="1Fe-OO-myD">
                                 <connections>
                                     <action selector="save:" target="Nvn-UM-2O8" id="vct-bG-JJh"/>
+                                    <binding destination="Voe-Tx-rLC" name="enabled" keyPath="operationInProgress" id="baA-Jf-6Lr">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </menuItem>
                         </items>
@@ -414,41 +429,41 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="GNU General Public License (GPL) v3" imagePosition="left" alignment="left" inset="2" id="Jp8-yv-HhW">
+                                            <buttonCell type="radio" title="GNU General Public License (GPL) v3" imagePosition="left" alignment="left" tag="3" inset="2" id="Jp8-yv-HhW">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="MIT license                                                             " imagePosition="left" alignment="left" inset="2" id="Sgo-xm-OPG">
+                                            <buttonCell type="radio" title="MIT license                                                             " imagePosition="left" alignment="left" tag="5" inset="2" id="Sgo-xm-OPG">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Mozilla Public License 2.0" imagePosition="left" alignment="left" inset="2" id="6a5-Gg-DPe">
+                                            <buttonCell type="radio" title="Mozilla Public License 2.0" imagePosition="left" alignment="left" tag="7" inset="2" id="6a5-Gg-DPe">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Eclipse Public License" imagePosition="left" alignment="left" inset="2" id="mFW-bM-eWQ">
+                                            <buttonCell type="radio" title="Eclipse Public License" imagePosition="left" alignment="left" tag="9" inset="2" id="mFW-bM-eWQ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                         </column>
                                         <column>
-                                            <buttonCell type="radio" title="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; license" imagePosition="left" alignment="left" inset="2" id="T8Q-nn-Ir4">
+                                            <buttonCell type="radio" title="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; license" imagePosition="left" alignment="left" tag="2" inset="2" id="T8Q-nn-Ir4">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="BSD 2-Clause &quot;Simplified&quot; or &quot;FreeBSD&quot; license" imagePosition="left" alignment="left" inset="2" id="npp-Sa-5HV">
+                                            <buttonCell type="radio" title="BSD 2-Clause &quot;Simplified&quot; or &quot;FreeBSD&quot; license" imagePosition="left" alignment="left" tag="4" inset="2" id="npp-Sa-5HV">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="GNU &quot;Lesser&quot; General Public License (LGPL) v3" imagePosition="left" alignment="left" inset="2" id="DXt-cY-pG5">
+                                            <buttonCell type="radio" title="GNU &quot;Lesser&quot; General Public License (LGPL) v3" imagePosition="left" alignment="left" tag="6" inset="2" id="DXt-cY-pG5">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Common Development and Distribution License" imagePosition="left" alignment="left" inset="2" id="AGz-aC-pHv">
+                                            <buttonCell type="radio" title="Common Development and Distribution License" imagePosition="left" alignment="left" tag="8" inset="2" id="AGz-aC-pHv">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Enter Custom..." imagePosition="left" alignment="left" state="on" inset="2" id="J7e-5h-QNy">
+                                            <buttonCell type="radio" title="Enter Custom..." imagePosition="left" alignment="left" state="on" tag="10" inset="2" id="J7e-5h-QNy">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -604,22 +619,22 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="SR8-JK-zrZ">
-                                    <rect key="frame" x="18" y="48" width="418" height="44"/>
+                                    <rect key="frame" x="18" y="48" width="373" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     <size key="cellSize" width="341" height="18"/>
                                     <size key="intercellSpacing" width="4" height="8"/>
-                                    <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" enabled="NO" inset="2" id="Xsc-9r-qaU">
+                                    <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="Xsc-9r-qaU">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <cells>
                                         <column>
-                                            <buttonCell type="radio" title="Use git (if folder is a repository else fallback on osx) " imagePosition="left" alignment="left" enabled="NO" state="on" tag="1" inset="2" id="8S6-lN-uNa">
+                                            <buttonCell type="radio" title="Use git history to find author of first relevant commit" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="8S6-lN-uNa">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a fixed author                                                          " imagePosition="left" alignment="left" enabled="NO" state="on" tag="2" inset="2" id="7As-bg-X6E">
+                                            <buttonCell type="radio" title="Use a fixed author                                                          " imagePosition="left" alignment="left" tag="2" inset="2" id="7As-bg-X6E">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -652,22 +667,22 @@
                                     </connections>
                                 </textField>
                                 <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="r9G-xo-IQX">
-                                    <rect key="frame" x="399" y="48" width="418" height="44"/>
+                                    <rect key="frame" x="399" y="48" width="327" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="cellSize" width="340" height="18"/>
+                                    <size key="cellSize" width="338" height="18"/>
                                     <size key="intercellSpacing" width="4" height="8"/>
-                                    <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" enabled="NO" inset="2" id="h7d-vx-R2o">
+                                    <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="h7d-vx-R2o">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <cells>
                                         <column>
-                                            <buttonCell type="radio" title="Use git (if folder is a repository else fallback on osx) " imagePosition="left" alignment="left" enabled="NO" state="on" tag="1" inset="2" id="Ijq-dP-DU4">
+                                            <buttonCell type="radio" title="Use git history to find date of first relevant commit" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="Ijq-dP-DU4">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <buttonCell type="radio" title="Use a fixed creation date                                              " imagePosition="left" alignment="left" enabled="NO" state="on" tag="2" inset="2" id="aIJ-YC-rrW">
+                                            <buttonCell type="radio" title="Use a fixed creation date                                              " imagePosition="left" alignment="left" tag="2" inset="2" id="aIJ-YC-rrW">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -710,14 +725,14 @@
                         <rect key="frame" x="784" y="204" width="338" height="238"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="vg5-gY-60q">
-                            <rect key="frame" x="1" y="1" width="321" height="236"/>
+                            <rect key="frame" x="1" y="1" width="336" height="236"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="ed9-V7-QRq">
-                                    <rect key="frame" x="0.0" y="0.0" width="321" height="236"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="336" height="236"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="321" height="236"/>
+                                    <size key="minSize" width="336" height="236"/>
                                     <size key="maxSize" width="700" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <connections>
@@ -732,7 +747,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Yos-3F-dyI">
-                            <rect key="frame" x="322" y="1" width="15" height="236"/>
+                            <rect key="frame" x="321" y="1" width="16" height="236"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -740,14 +755,14 @@
                         <rect key="frame" x="784" y="466" width="338" height="238"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="RXM-dp-ejA">
-                            <rect key="frame" x="1" y="1" width="321" height="236"/>
+                            <rect key="frame" x="1" y="1" width="336" height="236"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Ufw-6d-nub">
-                                    <rect key="frame" x="0.0" y="0.0" width="321" height="236"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="336" height="236"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="321" height="236"/>
+                                    <size key="minSize" width="336" height="236"/>
                                     <size key="maxSize" width="700" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <connections>
@@ -762,7 +777,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="esc-sN-JCp">
-                            <rect key="frame" x="322" y="1" width="15" height="236"/>
+                            <rect key="frame" x="321" y="1" width="16" height="236"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -1011,7 +1026,7 @@ Gw
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-36" y="-590.5"/>
+            <point key="canvasLocation" x="-200" y="-610"/>
         </window>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="J67-08-pY0" userLabel="preview sheet">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
@@ -1082,14 +1097,14 @@ Gw
                         <rect key="frame" x="608" y="54" width="472" height="584"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="hur-0W-Z99">
-                            <rect key="frame" x="1" y="1" width="455" height="582"/>
+                            <rect key="frame" x="1" y="1" width="470" height="582"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="lak-Pm-lE6">
-                                    <rect key="frame" x="0.0" y="0.0" width="457" height="582"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="472" height="582"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="455" height="582"/>
+                                    <size key="minSize" width="470" height="582"/>
                                     <size key="maxSize" width="589" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <connections>
@@ -1104,7 +1119,7 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="1Z8-Ld-dQU">
-                            <rect key="frame" x="456" y="1" width="15" height="582"/>
+                            <rect key="frame" x="455" y="1" width="16" height="582"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
