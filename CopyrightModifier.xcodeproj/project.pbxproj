@@ -68,7 +68,7 @@
 		B36175C619A4916600186F90 /* CopyrightModifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyrightModifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B36204841AB63883005AE54B /* FileInfoOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileInfoOptions.swift; sourceTree = "<group>"; };
 		B36C95BF1ABB1C3300E0CDB3 /* CopyrightInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CopyrightInformation.swift; path = CopyrightModifier/CopyrightInformation.swift; sourceTree = "<group>"; };
-		B37FC1821AC850530095BC07 /* CopyrightModifier.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = CopyrightModifier.entitlements; path = CopyrightModifier/CopyrightModifier.entitlements; sourceTree = "<group>"; };
+		B37FC1821AC850530095BC07 /* CopyrightModifier.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CopyrightModifier.entitlements; sourceTree = "<group>"; };
 		B39503761AB9C7A800544E52 /* NSView+Enable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Enable.swift"; sourceTree = "<group>"; };
 		B3A139411BFF7FC800491270 /* DefaultMinimalLicense.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DefaultMinimalLicense.txt; path = CopyrightModifier/DefaultMinimalLicense.txt; sourceTree = "<group>"; };
 		B3A139421BFF7FC800491270 /* DefaultTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DefaultTemplate.txt; path = CopyrightModifier/DefaultTemplate.txt; sourceTree = "<group>"; };
@@ -125,6 +125,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9809E9D61E71570100073B1A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B49FA2DA1A20D81A006F035B /* CopyrightGenerator.swift */,
+				B36C95BF1ABB1C3300E0CDB3 /* CopyrightInformation.swift */,
+				B3C822A81AB4CD3900E2FF73 /* FileContent.swift */,
+				B3C822A91AB4CD3900E2FF73 /* FileWriter.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		9809E9D71E71570F00073B1A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B49FA2C61A1FEC45006F035B /* AppDelegate.swift */,
+				B3C822AC1AB4D21B00E2FF73 /* MainWindowController.swift */,
+				B3A6D6C81AB4D91A003F8F4B /* PreviewWindowController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		B36175BD19A4916600186F90 = {
 			isa = PBXGroup;
 			children = (
@@ -164,13 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				B49FA2D71A1FF384006F035B /* Resources */,
-				B49FA2C61A1FEC45006F035B /* AppDelegate.swift */,
-				B3C822AC1AB4D21B00E2FF73 /* MainWindowController.swift */,
-				B3A6D6C81AB4D91A003F8F4B /* PreviewWindowController.swift */,
-				B49FA2DA1A20D81A006F035B /* CopyrightGenerator.swift */,
-				B36C95BF1ABB1C3300E0CDB3 /* CopyrightInformation.swift */,
-				B3C822A81AB4CD3900E2FF73 /* FileContent.swift */,
-				B3C822A91AB4CD3900E2FF73 /* FileWriter.swift */,
+				9809E9D71E71570F00073B1A /* Controller */,
+				9809E9D61E71570100073B1A /* Model */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -254,7 +270,7 @@
 				TargetAttributes = {
 					B36175C519A4916600186F90 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = SAY557T8WK;
+						DevelopmentTeam = GBNYWCK983;
 						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -447,10 +463,10 @@
 		B36175E319A4916600186F90 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = CopyrightModifier/CopyrightModifier.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = SAY557T8WK;
+				DEVELOPMENT_TEAM = GBNYWCK983;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -459,6 +475,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.pich.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -466,10 +483,10 @@
 		B36175E419A4916600186F90 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = CopyrightModifier/CopyrightModifier.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = SAY557T8WK;
+				DEVELOPMENT_TEAM = GBNYWCK983;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -478,6 +495,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.pich.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
